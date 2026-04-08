@@ -13,6 +13,7 @@ abstract class PlantSpecies with _$PlantSpecies {
     required PlantCategory category,
     required int waterFrequencyDays,
     required int fertilizerFrequencyDays,
+    required int repotFrequencyDays,
     required SunlightNeed sunlightNeed,
     required String winterCare,
     required String summerCare,

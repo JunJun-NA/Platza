@@ -29,6 +29,7 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
   PlantLocation _selectedLocation = PlantLocation.indoor;
   int? _waterIntervalDays;
   int? _fertilizeIntervalDays;
+  int? _repotIntervalDays;
   bool _isLoaded = false;
   bool _isSaving = false;
 
@@ -173,12 +174,18 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
         final fertilizeSchedule = schedules
             .where((s) => s.careType == CareType.fertilize && s.isEnabled)
             .toList();
+        final repotSchedule = schedules
+            .where((s) => s.careType == CareType.repot && s.isEnabled)
+            .toList();
 
         // 初期値をセット（まだセットされていない場合のみ）
         _waterIntervalDays ??=
             waterSchedule.isNotEmpty ? waterSchedule.first.intervalDays : null;
         _fertilizeIntervalDays ??= fertilizeSchedule.isNotEmpty
             ? fertilizeSchedule.first.intervalDays
+            : null;
+        _repotIntervalDays ??= repotSchedule.isNotEmpty
+            ? repotSchedule.first.intervalDays
             : null;
 
         return Column(
@@ -214,6 +221,21 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
                 recommendedDays: species.fertilizerFrequencyDays,
                 onChanged: (value) {
                   setState(() => _fertilizeIntervalDays = value);
+                },
+              ),
+            ],
+            if (_repotIntervalDays != null) ...[
+              const SizedBox(height: AppSpacing.md),
+              _buildIntervalSlider(
+                context,
+                emoji: '🪴',
+                label: '植え替え',
+                value: _repotIntervalDays!,
+                min: 30,
+                max: 1095,
+                recommendedDays: species.repotFrequencyDays,
+                onChanged: (value) {
+                  setState(() => _repotIntervalDays = value);
                 },
               ),
             ],
@@ -347,6 +369,10 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
           _fertilizeIntervalDays != null &&
           _fertilizeIntervalDays != schedule.intervalDays) {
         newInterval = _fertilizeIntervalDays;
+      } else if (schedule.careType == CareType.repot &&
+          _repotIntervalDays != null &&
+          _repotIntervalDays != schedule.intervalDays) {
+        newInterval = _repotIntervalDays;
       }
 
       if (newInterval != null) {
