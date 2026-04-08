@@ -1,0 +1,357 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:platza/application/providers/statistics_providers.dart';
+import 'package:platza/core/theme/theme.dart';
+import 'package:platza/domain/enums/enums.dart';
+import 'package:platza/presentation/widgets/widgets.dart';
+
+/// 統計画面 - お世話の統計・ストリーク表示
+class StatisticsScreen extends ConsumerWidget {
+  const StatisticsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final summaryAsync = ref.watch(statisticsSummaryProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('統計'),
+      ),
+      body: summaryAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => EmptyState(
+          emoji: '😢',
+          title: 'データを読み込めませんでした',
+          subtitle: error.toString(),
+        ),
+        data: (summary) {
+          if (summary.totalPlants == 0) {
+            return const EmptyState(
+              emoji: '📊',
+              title: 'まだ植物が登録されていません',
+              subtitle: '植物を登録すると統計が表示されます',
+            );
+          }
+          return ListView(
+            padding: AppSpacing.screenPadding,
+            children: [
+              _SummaryCards(summary: summary),
+              const SizedBox(height: AppSpacing.lg),
+              const SectionHeader(title: '今週のお世話'),
+              _WeeklyChart(dailyActivity: summary.dailyActivity),
+              const SizedBox(height: AppSpacing.lg),
+              const SectionHeader(title: 'ケア種別の内訳'),
+              _CareTypeBreakdown(breakdown: summary.careTypeBreakdown),
+              const SizedBox(height: AppSpacing.lg),
+              const SectionHeader(title: '植物別のお世話頻度'),
+              _PerPlantList(perPlantStats: summary.perPlantStats),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// 概要カード（3つ横並び）
+class _SummaryCards extends StatelessWidget {
+  const _SummaryCards({required this.summary});
+
+  final StatisticsSummary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _SummaryCardItem(
+            emoji: '🌿',
+            label: '植物数',
+            value: '${summary.totalPlants}',
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _SummaryCardItem(
+            emoji: '🔥',
+            label: '最長連続',
+            value: '${summary.bestStreak}日',
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _SummaryCardItem(
+            emoji: '✅',
+            label: '今月のお世話',
+            value: '${summary.monthlyCareCount}回',
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SummaryCardItem extends StatelessWidget {
+  const _SummaryCardItem({
+    required this.emoji,
+    required this.label,
+    required this.value,
+  });
+
+  final String emoji;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatzaCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.md,
+      ),
+      child: Column(
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 24)),
+          const SizedBox(height: AppSpacing.xxs),
+          Text(
+            value,
+            style: AppTypography.titleMedium.copyWith(
+              color: AppColors.textDefault,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xxxs),
+          Text(
+            label,
+            style: AppTypography.labelSmall.copyWith(
+              color: AppColors.textSubtlest,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 今週のお世話バーチャート
+class _WeeklyChart extends StatelessWidget {
+  const _WeeklyChart({required this.dailyActivity});
+
+  final List<int> dailyActivity;
+
+  static const _dayLabels = ['月', '火', '水', '木', '金', '土', '日'];
+
+  @override
+  Widget build(BuildContext context) {
+    final maxCount =
+        dailyActivity.isEmpty ? 1 : dailyActivity.reduce((a, b) => a > b ? a : b);
+    final effectiveMax = maxCount == 0 ? 1 : maxCount;
+
+    return PlatzaCard(
+      child: SizedBox(
+        height: 140,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: List.generate(7, (index) {
+            final count = index < dailyActivity.length ? dailyActivity[index] : 0;
+            final barHeight = (count / effectiveMax) * 80;
+
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (count > 0)
+                      Text(
+                        '$count',
+                        style: AppTypography.labelSmall.copyWith(
+                          color: AppColors.textSubtle,
+                        ),
+                      ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Container(
+                      height: count > 0 ? barHeight : 4,
+                      decoration: BoxDecoration(
+                        color: count > 0
+                            ? AppColors.primaryGreen
+                            : AppColors.borderLight,
+                        borderRadius: AppSpacing.borderRadiusSm,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      _dayLabels[index],
+                      style: AppTypography.labelSmall.copyWith(
+                        color: AppColors.textSubtlest,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+/// ケア種別の内訳
+class _CareTypeBreakdown extends StatelessWidget {
+  const _CareTypeBreakdown({required this.breakdown});
+
+  final Map<CareType, int> breakdown;
+
+  Color _colorForType(CareType type) {
+    return switch (type) {
+      CareType.water => AppColors.waterBlue,
+      CareType.fertilize => AppColors.fertilizerBrown,
+      CareType.repot => AppColors.repotOrange,
+      CareType.sunlight => AppColors.sunlightYellow,
+    };
+  }
+
+  Color _bgColorForType(CareType type) {
+    return switch (type) {
+      CareType.water => AppColors.waterBlueBg,
+      CareType.fertilize => AppColors.fertilizerBrownBg,
+      CareType.repot => AppColors.repotOrangeBg,
+      CareType.sunlight => AppColors.sunlightYellowBg,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final totalCount = breakdown.values.fold(0, (a, b) => a + b);
+    final effectiveTotal = totalCount == 0 ? 1 : totalCount;
+
+    return PlatzaCard(
+      child: Column(
+        children: CareType.values.map((type) {
+          final count = breakdown[type] ?? 0;
+          final ratio = count / effectiveTotal;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: Text(
+                    '${type.emoji} ${type.label}',
+                    style: AppTypography.bodySmall,
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: AppSpacing.borderRadiusSm,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: _bgColorForType(type),
+                            borderRadius: AppSpacing.borderRadiusSm,
+                          ),
+                        ),
+                        FractionallySizedBox(
+                          widthFactor: ratio,
+                          child: Container(
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: _colorForType(type),
+                              borderRadius: AppSpacing.borderRadiusSm,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                SizedBox(
+                  width: 36,
+                  child: Text(
+                    '$count回',
+                    style: AppTypography.labelMedium.copyWith(
+                      color: AppColors.textSubtle,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+/// 植物別のお世話頻度
+class _PerPlantList extends StatelessWidget {
+  const _PerPlantList({required this.perPlantStats});
+
+  final List<PlantStats> perPlantStats;
+
+  @override
+  Widget build(BuildContext context) {
+    if (perPlantStats.isEmpty) {
+      return const PlatzaCard(
+        child: Center(
+          child: Text(
+            'お世話データがありません',
+            style: AppTypography.bodySmall,
+          ),
+        ),
+      );
+    }
+
+    return PlatzaCard(
+      child: Column(
+        children: perPlantStats.map((stats) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        stats.plant.nickname,
+                        style: AppTypography.titleSmall,
+                      ),
+                      const SizedBox(height: AppSpacing.xxxs),
+                      Text(
+                        'お世話 ${stats.careCount}回 / 連続 ${stats.plant.streakDays}日',
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppColors.textSubtlest,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (stats.plant.streakDays > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xxs,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: AppColors.backgroundAccentOrange,
+                      borderRadius: AppSpacing.borderRadiusSm,
+                    ),
+                    child: Text(
+                      '🔥 ${stats.plant.streakDays}',
+                      style: AppTypography.labelMedium,
+                    ),
+                  ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}

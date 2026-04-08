@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd platza && dart run build_runner build:*)",
+      "Bash(cd platza && flutter analyze:*)",
+      "Bash(cd platza && flutter test:*)",
+      "Bash(cd platza && flutter run:*)"
+    ]
+  }
+}

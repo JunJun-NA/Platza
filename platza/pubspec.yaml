@@ -1,0 +1,79 @@
+name: platza
+description: "多肉植物・サボテンをドット絵で育てる、たまごっち風お世話管理アプリ"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 状態管理
+  flutter_riverpod: any
+  riverpod_annotation: any
+
+  # ローカルDB
+  drift: any
+  sqlite3_flutter_libs: any
+  path_provider: any
+  path: any
+
+  # ルーティング
+  go_router: any
+
+  # ドット絵アニメーション
+  flame: any
+
+  # 通知
+  flutter_local_notifications: any
+  timezone: any
+
+  # カメラ・画像選択
+  image_picker: any
+
+  # SharedPreferences
+  shared_preferences: any
+
+  # HTTP
+  http: any
+
+  # ユーティリティ
+  uuid: any
+  intl: any
+  freezed_annotation: any
+  json_annotation: any
+  collection: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: any
+  build_runner: any
+  drift_dev: any
+  freezed: any
+  json_serializable: any
+  riverpod_generator: any
+  mockito: any
+  sqlite3: any
+
+flutter:
+  uses-material-design: true
+
+  # assets:
+  #   - assets/pixel_art/echeveria/
+  #   - assets/pixel_art/sedum/
+  #   - assets/pixel_art/haworthia/
+  #   - assets/pixel_art/graptopetallum/
+  #   - assets/pixel_art/aloe/
+  #   - assets/pixel_art/cactus_round/
+  #   - assets/pixel_art/cactus_pillar/
+  #   - assets/pixel_art/cactus_paddle/
+  #   - assets/pixel_art/cactus_star/
+  #   - assets/pixel_art/cactus_ball/
+  #
+  # fonts:
+  #   - family: PixelFont
+  #     fonts:
+  #       - asset: assets/fonts/PixelMplus12-Regular.ttf

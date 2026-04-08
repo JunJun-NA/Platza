@@ -1,0 +1,138 @@
+import 'package:platza/domain/entities/plant_species.dart';
+import 'package:platza/domain/enums/enums.dart';
+
+/// 初期リリースの植物種マスターデータ
+class PlantSpeciesData {
+  PlantSpeciesData._();
+
+  static final List<PlantSpecies> allSpecies = [
+    // --- 多肉植物 ---
+    const PlantSpecies(
+      id: 'echeveria',
+      name: 'エケベリア',
+      category: PlantCategory.succulent,
+      waterFrequencyDays: 10,
+      fertilizerFrequencyDays: 30,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '水やりを月1回程度に減らし、室内の明るい場所で管理',
+      summerCare: '直射日光を避け、風通しの良い半日陰で管理。蒸れに注意',
+      description: 'バラのような美しいロゼット形の多肉植物。色とりどりの品種が人気',
+      assetPrefix: 'echeveria',
+    ),
+    const PlantSpecies(
+      id: 'sedum',
+      name: 'セダム',
+      category: PlantCategory.succulent,
+      waterFrequencyDays: 7,
+      fertilizerFrequencyDays: 30,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '寒さに強い品種が多い。水やりは控えめに',
+      summerCare: '高温多湿に注意。風通しを確保',
+      description: 'ぷっくりした小さな葉が密集して可愛らしい多肉植物',
+      assetPrefix: 'sedum',
+    ),
+    const PlantSpecies(
+      id: 'haworthia',
+      name: 'ハオルチア',
+      category: PlantCategory.succulent,
+      waterFrequencyDays: 10,
+      fertilizerFrequencyDays: 45,
+      sunlightNeed: SunlightNeed.low,
+      winterCare: '室内で管理。水やりは月1回程度',
+      summerCare: '直射日光は厳禁。明るい室内で管理',
+      description: '透明感のある「窓」を持つ美しい品種が多い。室内向き',
+      assetPrefix: 'haworthia',
+    ),
+    const PlantSpecies(
+      id: 'graptopetallum',
+      name: 'グラプトペタルム',
+      category: PlantCategory.succulent,
+      waterFrequencyDays: 10,
+      fertilizerFrequencyDays: 30,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '霜に弱い。室内の明るい場所で管理',
+      summerCare: '風通し良く管理。真夏は半日陰',
+      description: '朧月（おぼろづき）が有名。丈夫で育てやすい',
+      assetPrefix: 'graptopetallum',
+    ),
+    const PlantSpecies(
+      id: 'aloe',
+      name: 'アロエ',
+      category: PlantCategory.succulent,
+      waterFrequencyDays: 14,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '水やりをかなり控えめに。5℃以上を保つ',
+      summerCare: '日当たりと風通しの良い場所で。水やりは土が乾いてから',
+      description: '肉厚で力強い葉が特徴。薬用としても有名',
+      assetPrefix: 'aloe',
+    ),
+    // --- サボテン ---
+    const PlantSpecies(
+      id: 'cactus_round',
+      name: '丸型サボテン',
+      category: PlantCategory.cactus,
+      waterFrequencyDays: 14,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '水やりはほぼ不要。5℃以上を保つ',
+      summerCare: '日当たり良く管理。月2回程度の水やり',
+      description: 'ギムノカリキウムなど、丸くてコロンとした形が可愛い',
+      assetPrefix: 'cactus_round',
+    ),
+    const PlantSpecies(
+      id: 'cactus_pillar',
+      name: '柱サボテン',
+      category: PlantCategory.cactus,
+      waterFrequencyDays: 14,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '断水気味に。室内の明るい場所で',
+      summerCare: '日当たりと風通しの良い場所で管理',
+      description: '空に向かって伸びる柱状のサボテン。存在感がある',
+      assetPrefix: 'cactus_pillar',
+    ),
+    const PlantSpecies(
+      id: 'cactus_paddle',
+      name: 'ウチワサボテン',
+      category: PlantCategory.cactus,
+      waterFrequencyDays: 14,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '水やりは月1回以下。寒さにやや強い',
+      summerCare: '屋外OK。真夏でも元気に育つ',
+      description: '平たいうちわ型の茎が連なるユニークな形',
+      assetPrefix: 'cactus_paddle',
+    ),
+    const PlantSpecies(
+      id: 'cactus_star',
+      name: '星形サボテン',
+      category: PlantCategory.cactus,
+      waterFrequencyDays: 21,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.medium,
+      winterCare: '完全断水。室内で管理',
+      summerCare: '強い直射日光は避ける。半日陰が最適',
+      description: 'アストロフィツム属。星のような模様が美しい',
+      assetPrefix: 'cactus_star',
+    ),
+    const PlantSpecies(
+      id: 'cactus_ball',
+      name: '玉サボテン',
+      category: PlantCategory.cactus,
+      waterFrequencyDays: 14,
+      fertilizerFrequencyDays: 60,
+      sunlightNeed: SunlightNeed.high,
+      winterCare: '断水。暖かい室内で',
+      summerCare: '花が咲きやすい。日当たり良く管理',
+      description: 'マミラリアなど、小さな花を咲かせる球形サボテン',
+      assetPrefix: 'cactus_ball',
+    ),
+  ];
+
+  static PlantSpecies getById(String id) =>
+      allSpecies.firstWhere((s) => s.id == id);
+
+  static List<PlantSpecies> getByCategory(PlantCategory category) =>
+      allSpecies.where((s) => s.category == category).toList();
+}
