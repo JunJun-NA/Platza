@@ -162,6 +162,66 @@ void main() {
       expect(fertilizeLogs.first.id, 'log-fertilize');
     });
 
+    test('updateLog modifies existing log', () async {
+      final log = CareLog(
+        id: 'log-update',
+        plantId: 'plant-1',
+        careType: CareType.water,
+        performedAt: DateTime(2024, 6, 15, 10, 0),
+        note: '元のメモ',
+      );
+      await logRepository.addLog(log);
+
+      final updatedLog = log.copyWith(
+        performedAt: DateTime(2024, 6, 14, 9, 0),
+        note: '修正後のメモ',
+      );
+      await logRepository.updateLog(updatedLog);
+
+      final logs = await logRepository.getLogsForPlant('plant-1');
+      expect(logs.length, 1);
+      expect(logs.first.performedAt, DateTime(2024, 6, 14, 9, 0));
+      expect(logs.first.note, '修正後のメモ');
+      expect(logs.first.careType, CareType.water);
+    });
+
+    test('updateLog can set note to null', () async {
+      final log = CareLog(
+        id: 'log-null-note',
+        plantId: 'plant-1',
+        careType: CareType.fertilize,
+        performedAt: DateTime(2024, 6, 15),
+        note: '削除するメモ',
+      );
+      await logRepository.addLog(log);
+
+      await logRepository.updateLog(log.copyWith(note: null));
+
+      final logs = await logRepository.getLogsForPlant('plant-1');
+      expect(logs.first.note, isNull);
+    });
+
+    test('deleteLog removes log and others remain', () async {
+      await logRepository.addLog(CareLog(
+        id: 'log-keep',
+        plantId: 'plant-1',
+        careType: CareType.water,
+        performedAt: DateTime(2024, 6, 1),
+      ));
+      await logRepository.addLog(CareLog(
+        id: 'log-delete',
+        plantId: 'plant-1',
+        careType: CareType.fertilize,
+        performedAt: DateTime(2024, 6, 5),
+      ));
+
+      await logRepository.deleteLog('log-delete');
+
+      final logs = await logRepository.getLogsForPlant('plant-1');
+      expect(logs.length, 1);
+      expect(logs.first.id, 'log-keep');
+    });
+
     test('addLog stores note', () async {
       await logRepository.addLog(CareLog(
         id: 'log-with-note',

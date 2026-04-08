@@ -109,3 +109,103 @@ Future<void> addCareLog(
     debugPrint('通知再スケジュールエラー: $e');
   }
 }
+
+/// お世話ログを編集し、関連データを再計算するユーティリティ
+Future<void> editCareLog(
+  WidgetRef ref, {
+  required CareLog updatedLog,
+}) async {
+  final careLogRepo = ref.read(careLogRepositoryProvider);
+  await careLogRepo.updateLog(updatedLog);
+
+  await _recalculatePlantState(ref, updatedLog.plantId, updatedLog.careType);
+}
+
+/// お世話ログを削除し、関連データを再計算するユーティリティ
+Future<void> deleteCareLog(
+  WidgetRef ref, {
+  required CareLog log,
+}) async {
+  final careLogRepo = ref.read(careLogRepositoryProvider);
+  await careLogRepo.deleteLog(log.id);
+
+  await _recalculatePlantState(ref, log.plantId, log.careType);
+}
+
+/// ログ変更後にPlantの日付とスケジュール・通知を再計算する共通処理
+Future<void> _recalculatePlantState(
+  WidgetRef ref,
+  String plantId,
+  CareType careType,
+) async {
+  final careLogRepo = ref.read(careLogRepositoryProvider);
+  final plantRepo = ref.read(plantRepositoryProvider);
+
+  final plant = await plantRepo.getPlantById(plantId);
+  if (plant == null) return;
+
+  // 該当ケアタイプの最新ログから日付を再算出
+  final logs = await careLogRepo.getLogsByType(plantId, careType);
+  final latestDate = logs.isNotEmpty ? logs.first.performedAt : null;
+
+  Plant updated;
+  switch (careType) {
+    case CareType.water:
+      updated = plant.copyWith(lastWatered: latestDate);
+    case CareType.fertilize:
+      updated = plant.copyWith(lastFertilized: latestDate);
+    case CareType.repot:
+      updated = plant.copyWith(lastRepotted: latestDate);
+    case CareType.sunlight:
+      updated = plant;
+  }
+  await plantRepo.updatePlant(updated);
+
+  // スケジュールと通知を再計算
+  try {
+    final scheduleRepo = ref.read(careScheduleRepositoryProvider);
+    final schedules = await scheduleRepo.getSchedulesForPlant(plantId);
+    final matchingSchedule = schedules
+        .where((s) => s.careType == careType && s.isEnabled)
+        .toList();
+
+    if (matchingSchedule.isNotEmpty) {
+      final schedule = matchingSchedule.first;
+      final baseDate = latestDate ?? DateTime.now();
+      final newNextDueDate = baseDate.add(Duration(days: schedule.intervalDays));
+      final updatedSchedule = schedule.copyWith(nextDueDate: newNextDueDate);
+      await scheduleRepo.updateSchedule(updatedSchedule);
+
+      final notificationService = ref.read(notificationServiceProvider);
+      final settingsRepo = ref.read(userSettingsRepositoryProvider);
+      final settings = await settingsRepo.watchSettings().first;
+
+      final notificationId = NotificationService.generateNotificationId(
+        plantId,
+        careType.name,
+      );
+      await notificationService.cancelNotification(notificationId);
+
+      if (settings.notificationEnabled && latestDate != null) {
+        final scheduledDate = DateTime(
+          newNextDueDate.year,
+          newNextDueDate.month,
+          newNextDueDate.day,
+          settings.waterReminderHour,
+          settings.waterReminderMinute,
+        );
+        final title = '${careType.emoji} ${careType.label}の時間です';
+        final body = '${updated.nickname}の${careType.label}をしましょう！';
+
+        await notificationService.scheduleNotification(
+          id: notificationId,
+          title: title,
+          body: body,
+          scheduledDate: scheduledDate,
+        );
+      }
+    }
+  } catch (e) {
+    debugPrint('再計算エラー: $e');
+  }
+}

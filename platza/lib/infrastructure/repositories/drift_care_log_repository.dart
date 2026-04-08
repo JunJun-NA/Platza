@@ -49,6 +49,11 @@ class DriftCareLogRepository implements CareLogRepository {
   }
 
   @override
+  Future<void> updateLog(CareLog log) async {
+    await _db.update(_db.careLogs).replace(_toCompanion(log));
+  }
+
+  @override
   Future<void> deleteLog(String id) async {
     await (_db.delete(_db.careLogs)..where((t) => t.id.equals(id))).go();
   }

@@ -7,6 +7,7 @@ abstract class CareLogRepository {
   Future<List<CareLog>> getLogsByDateRange(DateTime start, DateTime end);
   Future<List<CareLog>> getLogsByType(String plantId, CareType careType);
   Future<void> addLog(CareLog log);
+  Future<void> updateLog(CareLog log);
   Future<void> deleteLog(String id);
   Stream<List<CareLog>> watchLogsForPlant(String plantId);
 }
