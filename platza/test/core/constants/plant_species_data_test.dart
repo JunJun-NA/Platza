@@ -56,6 +56,22 @@ void main() {
         expect(species.summerCare, isNotEmpty);
         expect(species.waterFrequencyDays, greaterThan(0));
         expect(species.fertilizerFrequencyDays, greaterThan(0));
+        expect(species.repotFrequencyDays, greaterThan(0));
+      }
+    });
+
+    test('succulents have repot frequency around 365 days', () {
+      final succulents =
+          PlantSpeciesData.getByCategory(PlantCategory.succulent);
+      for (final s in succulents) {
+        expect(s.repotFrequencyDays, greaterThanOrEqualTo(365));
+      }
+    });
+
+    test('cacti have repot frequency around 730 days', () {
+      final cacti = PlantSpeciesData.getByCategory(PlantCategory.cactus);
+      for (final c in cacti) {
+        expect(c.repotFrequencyDays, greaterThanOrEqualTo(730));
       }
     });
 

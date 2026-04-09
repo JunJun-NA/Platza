@@ -491,6 +491,17 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
     );
     await scheduleRepo.addSchedule(fertilizerSchedule);
 
+    final repotSchedule = CareSchedule(
+      id: uuid.v4(),
+      plantId: plantId,
+      careType: CareType.repot,
+      intervalDays: _selectedSpecies!.repotFrequencyDays,
+      nextDueDate: now.add(
+        Duration(days: _selectedSpecies!.repotFrequencyDays),
+      ),
+    );
+    await scheduleRepo.addSchedule(repotSchedule);
+
     // 写真で判別した場合、撮影した写真を植物の最初の記録として保存
     if (_identificationPhotoPath != null) {
       final photoRepo = ref.read(plantPhotoRepositoryProvider);

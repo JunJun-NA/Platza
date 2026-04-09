@@ -19,6 +19,7 @@ mixin _$PlantSpecies {
   PlantCategory get category;
   int get waterFrequencyDays;
   int get fertilizerFrequencyDays;
+  int get repotFrequencyDays;
   SunlightNeed get sunlightNeed;
   String get winterCare;
   String get summerCare;
@@ -50,6 +51,8 @@ mixin _$PlantSpecies {
             (identical(
                     other.fertilizerFrequencyDays, fertilizerFrequencyDays) ||
                 other.fertilizerFrequencyDays == fertilizerFrequencyDays) &&
+            (identical(other.repotFrequencyDays, repotFrequencyDays) ||
+                other.repotFrequencyDays == repotFrequencyDays) &&
             (identical(other.sunlightNeed, sunlightNeed) ||
                 other.sunlightNeed == sunlightNeed) &&
             (identical(other.winterCare, winterCare) ||
@@ -71,6 +74,7 @@ mixin _$PlantSpecies {
       category,
       waterFrequencyDays,
       fertilizerFrequencyDays,
+      repotFrequencyDays,
       sunlightNeed,
       winterCare,
       summerCare,
@@ -79,7 +83,7 @@ mixin _$PlantSpecies {
 
   @override
   String toString() {
-    return 'PlantSpecies(id: $id, name: $name, category: $category, waterFrequencyDays: $waterFrequencyDays, fertilizerFrequencyDays: $fertilizerFrequencyDays, sunlightNeed: $sunlightNeed, winterCare: $winterCare, summerCare: $summerCare, description: $description, assetPrefix: $assetPrefix)';
+    return 'PlantSpecies(id: $id, name: $name, category: $category, waterFrequencyDays: $waterFrequencyDays, fertilizerFrequencyDays: $fertilizerFrequencyDays, repotFrequencyDays: $repotFrequencyDays, sunlightNeed: $sunlightNeed, winterCare: $winterCare, summerCare: $summerCare, description: $description, assetPrefix: $assetPrefix)';
   }
 }
 
@@ -95,6 +99,7 @@ abstract mixin class $PlantSpeciesCopyWith<$Res> {
       PlantCategory category,
       int waterFrequencyDays,
       int fertilizerFrequencyDays,
+      int repotFrequencyDays,
       SunlightNeed sunlightNeed,
       String winterCare,
       String summerCare,
@@ -119,6 +124,7 @@ class _$PlantSpeciesCopyWithImpl<$Res> implements $PlantSpeciesCopyWith<$Res> {
     Object? category = null,
     Object? waterFrequencyDays = null,
     Object? fertilizerFrequencyDays = null,
+    Object? repotFrequencyDays = null,
     Object? sunlightNeed = null,
     Object? winterCare = null,
     Object? summerCare = null,
@@ -145,6 +151,10 @@ class _$PlantSpeciesCopyWithImpl<$Res> implements $PlantSpeciesCopyWith<$Res> {
       fertilizerFrequencyDays: null == fertilizerFrequencyDays
           ? _self.fertilizerFrequencyDays
           : fertilizerFrequencyDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      repotFrequencyDays: null == repotFrequencyDays
+          ? _self.repotFrequencyDays
+          : repotFrequencyDays // ignore: cast_nullable_to_non_nullable
               as int,
       sunlightNeed: null == sunlightNeed
           ? _self.sunlightNeed
@@ -269,6 +279,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             PlantCategory category,
             int waterFrequencyDays,
             int fertilizerFrequencyDays,
+            int repotFrequencyDays,
             SunlightNeed sunlightNeed,
             String winterCare,
             String summerCare,
@@ -286,6 +297,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             _that.category,
             _that.waterFrequencyDays,
             _that.fertilizerFrequencyDays,
+            _that.repotFrequencyDays,
             _that.sunlightNeed,
             _that.winterCare,
             _that.summerCare,
@@ -317,6 +329,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             PlantCategory category,
             int waterFrequencyDays,
             int fertilizerFrequencyDays,
+            int repotFrequencyDays,
             SunlightNeed sunlightNeed,
             String winterCare,
             String summerCare,
@@ -333,6 +346,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             _that.category,
             _that.waterFrequencyDays,
             _that.fertilizerFrequencyDays,
+            _that.repotFrequencyDays,
             _that.sunlightNeed,
             _that.winterCare,
             _that.summerCare,
@@ -363,6 +377,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             PlantCategory category,
             int waterFrequencyDays,
             int fertilizerFrequencyDays,
+            int repotFrequencyDays,
             SunlightNeed sunlightNeed,
             String winterCare,
             String summerCare,
@@ -379,6 +394,7 @@ extension PlantSpeciesPatterns on PlantSpecies {
             _that.category,
             _that.waterFrequencyDays,
             _that.fertilizerFrequencyDays,
+            _that.repotFrequencyDays,
             _that.sunlightNeed,
             _that.winterCare,
             _that.summerCare,
@@ -399,6 +415,7 @@ class _PlantSpecies implements PlantSpecies {
       required this.category,
       required this.waterFrequencyDays,
       required this.fertilizerFrequencyDays,
+      required this.repotFrequencyDays,
       required this.sunlightNeed,
       required this.winterCare,
       required this.summerCare,
@@ -417,6 +434,8 @@ class _PlantSpecies implements PlantSpecies {
   final int waterFrequencyDays;
   @override
   final int fertilizerFrequencyDays;
+  @override
+  final int repotFrequencyDays;
   @override
   final SunlightNeed sunlightNeed;
   @override
@@ -457,6 +476,8 @@ class _PlantSpecies implements PlantSpecies {
             (identical(
                     other.fertilizerFrequencyDays, fertilizerFrequencyDays) ||
                 other.fertilizerFrequencyDays == fertilizerFrequencyDays) &&
+            (identical(other.repotFrequencyDays, repotFrequencyDays) ||
+                other.repotFrequencyDays == repotFrequencyDays) &&
             (identical(other.sunlightNeed, sunlightNeed) ||
                 other.sunlightNeed == sunlightNeed) &&
             (identical(other.winterCare, winterCare) ||
@@ -478,6 +499,7 @@ class _PlantSpecies implements PlantSpecies {
       category,
       waterFrequencyDays,
       fertilizerFrequencyDays,
+      repotFrequencyDays,
       sunlightNeed,
       winterCare,
       summerCare,
@@ -486,7 +508,7 @@ class _PlantSpecies implements PlantSpecies {
 
   @override
   String toString() {
-    return 'PlantSpecies(id: $id, name: $name, category: $category, waterFrequencyDays: $waterFrequencyDays, fertilizerFrequencyDays: $fertilizerFrequencyDays, sunlightNeed: $sunlightNeed, winterCare: $winterCare, summerCare: $summerCare, description: $description, assetPrefix: $assetPrefix)';
+    return 'PlantSpecies(id: $id, name: $name, category: $category, waterFrequencyDays: $waterFrequencyDays, fertilizerFrequencyDays: $fertilizerFrequencyDays, repotFrequencyDays: $repotFrequencyDays, sunlightNeed: $sunlightNeed, winterCare: $winterCare, summerCare: $summerCare, description: $description, assetPrefix: $assetPrefix)';
   }
 }
 
@@ -504,6 +526,7 @@ abstract mixin class _$PlantSpeciesCopyWith<$Res>
       PlantCategory category,
       int waterFrequencyDays,
       int fertilizerFrequencyDays,
+      int repotFrequencyDays,
       SunlightNeed sunlightNeed,
       String winterCare,
       String summerCare,
@@ -529,6 +552,7 @@ class __$PlantSpeciesCopyWithImpl<$Res>
     Object? category = null,
     Object? waterFrequencyDays = null,
     Object? fertilizerFrequencyDays = null,
+    Object? repotFrequencyDays = null,
     Object? sunlightNeed = null,
     Object? winterCare = null,
     Object? summerCare = null,
@@ -555,6 +579,10 @@ class __$PlantSpeciesCopyWithImpl<$Res>
       fertilizerFrequencyDays: null == fertilizerFrequencyDays
           ? _self.fertilizerFrequencyDays
           : fertilizerFrequencyDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      repotFrequencyDays: null == repotFrequencyDays
+          ? _self.repotFrequencyDays
+          : repotFrequencyDays // ignore: cast_nullable_to_non_nullable
               as int,
       sunlightNeed: null == sunlightNeed
           ? _self.sunlightNeed
