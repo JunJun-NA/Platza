@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:platza/presentation/widgets/empty_state.dart';
+import 'package:platza/presentation/widgets/molecules/empty_state.dart';
 
 import '../../helpers/golden_test_helper.dart';
 

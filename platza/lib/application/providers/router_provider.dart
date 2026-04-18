@@ -12,7 +12,7 @@ import 'package:platza/presentation/statistics/statistics_screen.dart';
 import 'package:platza/presentation/settings/settings_screen.dart';
 import 'package:platza/presentation/debug/pixel_art_gallery_screen.dart';
 import 'package:platza/presentation/splash/splash_screen.dart';
-import 'package:platza/presentation/widgets/shell_scaffold.dart';
+import 'package:platza/presentation/widgets/organisms/shell_scaffold.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();

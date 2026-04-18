@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:platza/presentation/widgets/pixel_container.dart';
+import 'package:platza/presentation/widgets/atoms/pixel_container.dart';
 
 import '../../helpers/golden_test_helper.dart';
 

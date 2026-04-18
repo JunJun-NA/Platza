@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:platza/domain/enums/enums.dart';
-import 'package:platza/presentation/widgets/status_badge.dart';
+import 'package:platza/presentation/widgets/atoms/status_badge.dart';
 
 import '../../helpers/golden_test_helper.dart';
 
