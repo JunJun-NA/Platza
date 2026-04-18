@@ -8,6 +8,7 @@ class AppRoutes {
   static const String plantEdit = '/plant/:id/edit';
   static const String plantRegister = '/plant/register';
   static const String careLog = '/plant/:id/log';
+  static const String careCalendar = '/plant/:id/calendar';
   static const String statistics = '/statistics';
   static const String settings = '/settings';
 
@@ -19,4 +20,7 @@ class AppRoutes {
 
   /// お世話ログ画面のパスを生成
   static String careLogPath(String id) => '/plant/$id/log';
+
+  /// お世話カレンダー画面のパスを生成
+  static String careCalendarPath(String id) => '/plant/$id/calendar';
 }

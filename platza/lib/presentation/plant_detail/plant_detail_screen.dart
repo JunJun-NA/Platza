@@ -233,9 +233,25 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
                         context.push(AppRoutes.careLogPath(widget.plantId)),
                     padding: EdgeInsets.zero,
                     child: const ListTile(
-                      leading: Icon(Icons.calendar_month),
+                      leading: Icon(Icons.history),
                       title: Text('お世話ログ'),
                       subtitle: Text('過去のお世話履歴を確認'),
+                      trailing: Icon(Icons.chevron_right),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                // お世話カレンダーへのリンク
+                Padding(
+                  padding: AppSpacing.screenPaddingHorizontal,
+                  child: PlatzaCard(
+                    onTap: () => context
+                        .push(AppRoutes.careCalendarPath(widget.plantId)),
+                    padding: EdgeInsets.zero,
+                    child: const ListTile(
+                      leading: Icon(Icons.calendar_month),
+                      title: Text('お世話カレンダー'),
+                      subtitle: Text('月単位で実績と予定を確認'),
                       trailing: Icon(Icons.chevron_right),
                     ),
                   ),

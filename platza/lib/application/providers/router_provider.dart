@@ -6,6 +6,7 @@ import 'package:platza/presentation/home/home_screen.dart';
 import 'package:platza/presentation/plant_detail/plant_detail_screen.dart';
 import 'package:platza/presentation/plant_edit/plant_edit_screen.dart';
 import 'package:platza/presentation/plant_register/plant_register_screen.dart';
+import 'package:platza/presentation/care_calendar/care_calendar_screen.dart';
 import 'package:platza/presentation/care_log/care_log_screen.dart';
 import 'package:platza/presentation/statistics/statistics_screen.dart';
 import 'package:platza/presentation/settings/settings_screen.dart';
@@ -81,6 +82,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final plantId = state.pathParameters['id']!;
           return CareLogScreen(plantId: plantId);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.careCalendar,
+        builder: (context, state) {
+          final plantId = state.pathParameters['id']!;
+          return CareCalendarScreen(plantId: plantId);
         },
       ),
     ],
