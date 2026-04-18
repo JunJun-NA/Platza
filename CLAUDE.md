@@ -29,7 +29,7 @@ platza/lib/
 ## Commands
 
 ```bash
-# コード生成（freezed, drift, riverpod_generator など）
+# コード生成（freezed, drift, riverpod_generator, widgetbook_generator など）
 cd platza && dart run build_runner build --delete-conflicting-outputs
 
 # 静的解析
@@ -40,7 +40,17 @@ cd platza && flutter test
 
 # 実行
 cd platza && flutter run
+
+# Widgetbook（コンポーネントカタログ）をローカル起動
+cd platza && flutter run -t widgetbook/main.dart -d chrome
 ```
+
+## Widgetbook
+
+- ローカル: `flutter run -t widgetbook/main.dart -d chrome`
+- 公開URL: https://junjun-na.github.io/Platza/ （main push時に GitHub Actions で自動デプロイ）
+- コンポーネント設計思想: [docs/design_system.md](docs/design_system.md)
+- 新規コンポーネント追加時は `widgetbook/use_cases/<layer>/` にユースケースを追加し、`build_runner` を回して `main.directories.g.dart` を更新する
 
 ## Rules
 

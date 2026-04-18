@@ -1,17 +1,46 @@
-# platza
+# Platza
 
-A new Flutter project.
+多肉植物・サボテンをドット絵で育てる、たまごっち風お世話管理アプリ（Flutter）
 
-## Getting Started
+## セットアップ
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Widgetbook（コンポーネントカタログ）
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- ローカル起動:
+  ```bash
+  flutter run -t widgetbook/main.dart -d chrome
+  ```
+- 公開URL: https://junjun-na.github.io/Platza/
+  - main ブランチへの push をトリガーに GitHub Actions で自動デプロイされる
+- 設計思想: [docs/design_system.md](../docs/design_system.md)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## コマンド
+
+| 用途 | コマンド |
+|---|---|
+| コード生成 | `dart run build_runner build --delete-conflicting-outputs` |
+| 静的解析 | `flutter analyze` |
+| テスト | `flutter test` |
+| 実行 | `flutter run` |
+| Widgetbook 起動 | `flutter run -t widgetbook/main.dart -d chrome` |
+
+## プロジェクト構成
+
+クリーンアーキテクチャ構成。詳細は [CLAUDE.md](../CLAUDE.md) を参照。
+
+```
+platza/lib/
+├── main.dart
+├── app.dart
+├── core/           # 定数、テーマ
+├── domain/         # エンティティ、Enum、リポジトリインターフェース
+├── infrastructure/ # DB実装、リポジトリ実装
+├── application/    # Provider定義
+└── presentation/   # 画面、ウィジェット（atoms/molecules/organisms）
+```
