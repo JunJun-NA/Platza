@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:platza/core/theme/theme.dart';
-import 'package:platza/presentation/widgets/pixel_container.dart';
+import 'package:platza/presentation/widgets/atoms/pixel_container.dart';
 
 /// 空状態の表示ウィジェット
 ///

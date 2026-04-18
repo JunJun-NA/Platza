@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/enums/enums.dart';
-import 'package:platza/presentation/widgets/pixel_art_widget.dart';
+import 'package:platza/presentation/widgets/atoms/pixel_art_widget.dart';
 
 /// ドット絵の全パターンを一覧表示するデバッグ画面
 class PixelArtGalleryScreen extends StatelessWidget {
