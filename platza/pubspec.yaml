@@ -46,6 +46,9 @@ dependencies:
   json_annotation: any
   collection: any
 
+  # カレンダー
+  table_calendar: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
