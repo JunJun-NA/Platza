@@ -1,0 +1,52 @@
+name: Deploy Widgetbook to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'platza/**'
+      - '.github/workflows/widgetbook.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: widgetbook-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: platza
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.41.6'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate Widgetbook directories
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build Widgetbook for web
+        run: flutter build web -t widgetbook/main.dart --release --base-href /Platza/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: platza/build/web
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'chore: deploy Widgetbook (${{ github.sha }})'
