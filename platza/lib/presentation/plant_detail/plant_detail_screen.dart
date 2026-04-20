@@ -228,32 +228,24 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
                 // お世話ログへのリンク
                 Padding(
                   padding: AppSpacing.screenPaddingHorizontal,
-                  child: PlatzaCard(
+                  child: LinkNavigationCard(
+                    icon: Icons.history,
+                    title: 'お世話ログ',
+                    subtitle: '過去のお世話履歴を確認',
                     onTap: () =>
                         context.push(AppRoutes.careLogPath(widget.plantId)),
-                    padding: EdgeInsets.zero,
-                    child: const ListTile(
-                      leading: Icon(Icons.history),
-                      title: Text('お世話ログ'),
-                      subtitle: Text('過去のお世話履歴を確認'),
-                      trailing: Icon(Icons.chevron_right),
-                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 // お世話カレンダーへのリンク
                 Padding(
                   padding: AppSpacing.screenPaddingHorizontal,
-                  child: PlatzaCard(
+                  child: LinkNavigationCard(
+                    icon: Icons.calendar_month,
+                    title: 'お世話カレンダー',
+                    subtitle: '月単位で実績と予定を確認',
                     onTap: () => context
                         .push(AppRoutes.careCalendarPath(widget.plantId)),
-                    padding: EdgeInsets.zero,
-                    child: const ListTile(
-                      leading: Icon(Icons.calendar_month),
-                      title: Text('お世話カレンダー'),
-                      subtitle: Text('月単位で実績と予定を確認'),
-                      trailing: Icon(Icons.chevron_right),
-                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -496,38 +488,6 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
     );
     final daysLeft = dueDay.difference(today).inDays;
 
-    final isOverdue = daysLeft < 0;
-    final isDueToday = daysLeft == 0;
-
-    // 残り日数のテキスト
-    String daysText;
-    if (isOverdue) {
-      daysText = '${-daysLeft}日超過';
-    } else if (isDueToday) {
-      daysText = '今日';
-    } else if (daysLeft == 1) {
-      daysText = '明日';
-    } else {
-      daysText = 'あと$daysLeft日';
-    }
-
-    // 色の決定
-    final Color textColor;
-    final Color bgColor;
-    if (isOverdue) {
-      textColor = AppColors.textDanger;
-      bgColor = AppColors.backgroundDangerLight;
-    } else if (isDueToday) {
-      textColor = AppColors.textWarning;
-      bgColor = AppColors.backgroundWarningLight;
-    } else if (daysLeft <= 2) {
-      textColor = AppColors.textAccentOrange;
-      bgColor = AppColors.backgroundAccentOrange;
-    } else {
-      textColor = AppColors.textSubtle;
-      bgColor = AppColors.surfaceTertiary;
-    }
-
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xs),
       child: Row(
@@ -543,23 +503,7 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.sm,
-              vertical: AppSpacing.xxs,
-            ),
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: AppRadius.all8,
-            ),
-            child: Text(
-              daysText,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
+          ScheduleStatusBadge(daysLeft: daysLeft),
           const SizedBox(width: AppSpacing.xs),
           Text(
             '(${schedule.intervalDays}日ごと)',
