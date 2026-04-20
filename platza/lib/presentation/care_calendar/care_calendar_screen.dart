@@ -188,7 +188,6 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
   }
 
   Widget _buildEventCard(BuildContext context, CareCalendarEvent event) {
-    final color = _careTypeColor(event.careType);
     final note = event.log?.note;
 
     return Padding(
@@ -196,20 +195,7 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
       child: PlatzaCard(
         child: Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.15),
-                borderRadius: AppRadius.all8,
-              ),
-              child: Center(
-                child: Text(
-                  event.careType.emoji,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
+            CareTypeIconContainer(careType: event.careType),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
@@ -251,14 +237,6 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
     );
   }
 
-  Color _careTypeColor(CareType type) {
-    return switch (type) {
-      CareType.water => AppColors.careWater,
-      CareType.fertilize => AppColors.careFertilize,
-      CareType.sunlight => AppColors.careSunlight,
-      CareType.repot => AppColors.careRepot,
-    };
-  }
 
   String _formatDate(DateTime date) =>
       '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}';

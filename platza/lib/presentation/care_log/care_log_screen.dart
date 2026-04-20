@@ -6,7 +6,6 @@ import 'package:platza/application/providers/care_schedule_providers.dart';
 import 'package:platza/application/providers/plant_providers.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/entities/entities.dart';
-import 'package:platza/domain/enums/enums.dart';
 import 'package:platza/presentation/widgets/widgets.dart';
 
 /// お世話ログ画面 - 日付ごとにグループ化してお世話履歴を表示
@@ -94,20 +93,7 @@ class CareLogScreen extends ConsumerWidget {
         child: Row(
           children: [
             // お世話種類のアイコン
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: _careTypeColor(log.careType).withValues(alpha: 0.15),
-                borderRadius: AppRadius.all8,
-              ),
-              child: Center(
-                child: Text(
-                  log.careType.emoji,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
+            CareTypeIconContainer(careType: log.careType),
             const SizedBox(width: AppSpacing.md),
             // ログ情報
             Expanded(
@@ -329,15 +315,6 @@ class CareLogScreen extends ConsumerWidget {
   void _invalidateProviders(WidgetRef ref) {
     ref.invalidate(plantByIdProvider(plantId));
     ref.invalidate(careSchedulesForPlantProvider(plantId));
-  }
-
-  Color _careTypeColor(CareType careType) {
-    return switch (careType) {
-      CareType.water => AppColors.careWater,
-      CareType.fertilize => AppColors.careFertilize,
-      CareType.sunlight => AppColors.careSunlight,
-      CareType.repot => AppColors.careRepot,
-    };
   }
 
   String _formatDate(DateTime date) {
