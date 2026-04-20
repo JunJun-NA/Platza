@@ -201,7 +201,7 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
               height: 40,
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.15),
-                borderRadius: AppSpacing.borderRadiusSm,
+                borderRadius: AppRadius.all8,
               ),
               child: Center(
                 child: Text(

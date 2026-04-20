@@ -115,7 +115,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ListTile(
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           side: BorderSide(
             color: isSelected ? AppColors.primaryGreen : AppColors.borderLight,
             width: isSelected ? 2 : 1,
@@ -176,14 +176,14 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
     return Card(
       elevation: 2,
       shape: const RoundedRectangleBorder(
-        borderRadius: AppSpacing.borderRadiusMd,
+        borderRadius: AppRadius.all12,
         side: BorderSide(
           color: AppColors.primaryGreen,
           width: 2,
         ),
       ),
       child: InkWell(
-        borderRadius: AppSpacing.borderRadiusMd,
+        borderRadius: AppRadius.all12,
         onTap: _isIdentifying ? null : _onIdentifyFromPhoto,
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -326,7 +326,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
                   padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: ListTile(
                     shape: const RoundedRectangleBorder(
-                      borderRadius: AppSpacing.borderRadiusMd,
+                      borderRadius: AppRadius.all12,
                       side: BorderSide(color: AppColors.borderLight),
                     ),
                     title: Text(candidate.name),

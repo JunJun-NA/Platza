@@ -175,7 +175,7 @@ class _WeeklyChart extends StatelessWidget {
                         color: count > 0
                             ? AppColors.primaryGreen
                             : AppColors.borderLight,
-                        borderRadius: AppSpacing.borderRadiusSm,
+                        borderRadius: AppRadius.all8,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
@@ -244,14 +244,14 @@ class _CareTypeBreakdown extends StatelessWidget {
                 ),
                 Expanded(
                   child: ClipRRect(
-                    borderRadius: AppSpacing.borderRadiusSm,
+                    borderRadius: AppRadius.all8,
                     child: Stack(
                       children: [
                         Container(
                           height: 20,
                           decoration: BoxDecoration(
                             color: _bgColorForType(type),
-                            borderRadius: AppSpacing.borderRadiusSm,
+                            borderRadius: AppRadius.all8,
                           ),
                         ),
                         FractionallySizedBox(
@@ -260,7 +260,7 @@ class _CareTypeBreakdown extends StatelessWidget {
                             height: 20,
                             decoration: BoxDecoration(
                               color: _colorForType(type),
-                              borderRadius: AppSpacing.borderRadiusSm,
+                              borderRadius: AppRadius.all8,
                             ),
                           ),
                         ),
@@ -340,7 +340,7 @@ class _PerPlantList extends StatelessWidget {
                     ),
                     decoration: const BoxDecoration(
                       color: AppColors.backgroundAccentOrange,
-                      borderRadius: AppSpacing.borderRadiusSm,
+                      borderRadius: AppRadius.all8,
                     ),
                     child: Text(
                       '🔥 ${stats.plant.streakDays}',

@@ -44,6 +44,7 @@ Widgetbook で各コンポーネントのユースケースを確認できる。
 | Colors | `AppColors` / `AppPrimitiveColors` | Figma "Semantic Color" / "Primitive Color" |
 | Typography | `AppTypography` | Figma `typography/*` Text Styles |
 | Spacing | `AppSpacing` | Figma "Spacing" variables |
+| Radius | `AppRadius` | Figma "Radius" variables |
 | Shadows | `AppShadows` | Figma Effect Styles |
 
 Figma ↔ コードの対応は各トークンファイル冒頭のコメントに記載されている。
@@ -109,6 +110,23 @@ CareActionButton は `icon/care/{water,fertilize,sunlight,repot}`, `border/care/
 
 - `background/brand`（lightGreen/700 alias） → EmptyState のアクションボタン bg。Flutter は `AppColors.backgroundBrand`
 - `border/brandSubtle`（lightGreen/100 alias） → PixelContainer の淡緑ボーダー。Flutter は `AppColors.borderBrandSubtle`
+
+### Radius（角丸）
+
+Figma `Radius` コレクションと `AppRadius` が 1:1 対応（値ベース命名）。
+
+| Figma | Flutter (double) | BorderRadius.all |
+|---|---|---|
+| `Radius/2` | `AppRadius.r2` | `AppRadius.all2` |
+| `Radius/4` | `AppRadius.r4` | `AppRadius.all4` |
+| `Radius/6` | `AppRadius.r6` | `AppRadius.all6` |
+| `Radius/8` | `AppRadius.r8` | `AppRadius.all8` |
+| `Radius/12` | `AppRadius.r12` | `AppRadius.all12` |
+| `Radius/16` | `AppRadius.r16` | `AppRadius.all16` |
+| `Radius/20` | `AppRadius.r20` | `AppRadius.all20` |
+| `Radius/999` | `AppRadius.full` | `AppRadius.allFull` |
+
+旧 `AppSpacing.radiusXl` (24) は廃止し、新スケールの `r20` を採用（PixelContainer hero / SplashScreen ロゴコンテナで −4px の視覚差）。
 
 ## Claude 向けルール
 

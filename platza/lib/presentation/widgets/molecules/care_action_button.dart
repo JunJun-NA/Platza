@@ -61,7 +61,7 @@ class CareActionButton extends StatelessWidget {
               height: AppSpacing.actionButtonSize,
               decoration: BoxDecoration(
                 color: _bgColor,
-                borderRadius: AppSpacing.borderRadiusLg,
+                borderRadius: AppRadius.all16,
                 border: Border.all(
                   color: _color.withValues(alpha: 0.3),
                 ),

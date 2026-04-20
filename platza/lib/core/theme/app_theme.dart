@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:platza/core/theme/app_colors.dart';
+import 'package:platza/core/theme/app_radius.dart';
 import 'package:platza/core/theme/app_spacing.dart';
 import 'package:platza/core/theme/app_typography.dart';
 
@@ -44,7 +45,7 @@ class AppTheme {
         elevation: 0,
         color: AppColors.surfaceLight,
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppRadius.all16,
           side: BorderSide(color: AppColors.borderLight),
         ),
         margin: EdgeInsets.zero,
@@ -56,7 +57,7 @@ class AppTheme {
         foregroundColor: Colors.white,
         elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppRadius.all16,
         ),
       ),
 
@@ -82,15 +83,15 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.surfaceDimLight,
         border: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.borderLight),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.borderLight),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.primaryGreen, width: 2),
         ),
         contentPadding: EdgeInsets.symmetric(
@@ -109,7 +110,7 @@ class AppTheme {
             vertical: AppSpacing.md,
           ),
           shape: const RoundedRectangleBorder(
-            borderRadius: AppSpacing.borderRadiusMd,
+            borderRadius: AppRadius.all12,
           ),
           textStyle: AppTypography.button,
         ),
@@ -129,7 +130,7 @@ class AppTheme {
             vertical: AppSpacing.md,
           ),
           shape: const RoundedRectangleBorder(
-            borderRadius: AppSpacing.borderRadiusMd,
+            borderRadius: AppRadius.all12,
           ),
           textStyle: AppTypography.button,
         ),
@@ -138,7 +139,7 @@ class AppTheme {
       // --- ListTile ---
       listTileTheme: const ListTileThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
         ),
         contentPadding: EdgeInsets.symmetric(
           horizontal: AppSpacing.lg,
@@ -207,7 +208,7 @@ class AppTheme {
         elevation: 0,
         color: AppColors.surfaceDark,
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppRadius.all16,
           side: BorderSide(color: AppColors.borderDark),
         ),
         margin: EdgeInsets.zero,
@@ -218,7 +219,7 @@ class AppTheme {
         foregroundColor: Colors.white,
         elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppRadius.all16,
         ),
       ),
 
@@ -242,15 +243,15 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.surfaceDimDark,
         border: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.borderDark),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.borderDark),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.primaryLight, width: 2),
         ),
         contentPadding: EdgeInsets.symmetric(
@@ -268,7 +269,7 @@ class AppTheme {
             vertical: AppSpacing.md,
           ),
           shape: const RoundedRectangleBorder(
-            borderRadius: AppSpacing.borderRadiusMd,
+            borderRadius: AppRadius.all12,
           ),
           textStyle: AppTypography.button,
         ),

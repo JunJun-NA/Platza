@@ -329,7 +329,7 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
                   return GestureDetector(
                     onTap: () => _showPhotoViewer(context, photo),
                     child: ClipRRect(
-                      borderRadius: AppSpacing.borderRadiusSm,
+                      borderRadius: AppRadius.all8,
                       child: Image.file(
                         File(photo.filePath),
                         fit: BoxFit.cover,
@@ -550,7 +550,7 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
             ),
             decoration: BoxDecoration(
               color: bgColor,
-              borderRadius: AppSpacing.borderRadiusSm,
+              borderRadius: AppRadius.all8,
             ),
             child: Text(
               daysText,
