@@ -28,7 +28,7 @@ class PlatzaCard extends StatelessWidget {
       child: onTap != null
           ? InkWell(
               onTap: onTap,
-              borderRadius: AppSpacing.borderRadiusLg,
+              borderRadius: AppRadius.all16,
               child: content,
             )
           : content,

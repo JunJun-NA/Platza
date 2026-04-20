@@ -249,7 +249,7 @@ class _SplashScreenState extends State<SplashScreen>
                     height: AppSpacing.pixelArtLarge,
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: AppSpacing.borderRadiusXl,
+                      borderRadius: AppRadius.all20,
                     ),
                     child: Center(
                       child: PixelArtWidget(

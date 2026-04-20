@@ -50,8 +50,8 @@ class PixelContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: size == PixelContainerSize.small
-            ? AppSpacing.borderRadiusMd
-            : AppSpacing.borderRadiusXl,
+            ? AppRadius.all12
+            : AppRadius.all20,
         border: showBorder
             ? Border.all(color: borderColor, width: size == PixelContainerSize.hero ? 3 : 2)
             : null,

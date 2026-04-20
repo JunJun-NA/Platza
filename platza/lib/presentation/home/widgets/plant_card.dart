@@ -22,7 +22,7 @@ class PlantCard extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.plantDetailPath(plant.id));
         },
-        borderRadius: AppSpacing.borderRadiusLg,
+        borderRadius: AppRadius.all16,
         child: Column(
           children: [
             // ドット絵表示エリア

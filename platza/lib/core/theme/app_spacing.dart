@@ -19,20 +19,7 @@ class AppSpacing {
   static const double xxxxl = 40; // Figma: 3xl
   static const double xxxxxl = 48; // Figma: 4xl
 
-  // --- ボーダー半径 ---
-  static const double radiusSm = 8;
-  static const double radiusMd = 12;
-  static const double radiusLg = 16;
-  static const double radiusXl = 24;
-
-  static const BorderRadius borderRadiusSm =
-      BorderRadius.all(Radius.circular(radiusSm));
-  static const BorderRadius borderRadiusMd =
-      BorderRadius.all(Radius.circular(radiusMd));
-  static const BorderRadius borderRadiusLg =
-      BorderRadius.all(Radius.circular(radiusLg));
-  static const BorderRadius borderRadiusXl =
-      BorderRadius.all(Radius.circular(radiusXl));
+  // ボーダー半径は AppRadius を参照する（Figma `Radius` コレクションと 1:1 対応）
 
   // --- ピクセルアート表示エリア ---
   static const double pixelArtSmall = 64;

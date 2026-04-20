@@ -302,7 +302,7 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ListTile(
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusMd,
+          borderRadius: AppRadius.all12,
           side: BorderSide(
             color: isSelected ? AppColors.primaryGreen : AppColors.borderLight,
             width: isSelected ? 2 : 1,
