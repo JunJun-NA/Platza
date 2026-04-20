@@ -204,19 +204,19 @@ class _CareTypeBreakdown extends StatelessWidget {
 
   Color _colorForType(CareType type) {
     return switch (type) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.repot => AppColors.repotOrange,
-      CareType.sunlight => AppColors.sunlightYellow,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.repot => AppColors.careRepot,
+      CareType.sunlight => AppColors.careSunlight,
     };
   }
 
   Color _bgColorForType(CareType type) {
     return switch (type) {
-      CareType.water => AppColors.waterBlueBg,
-      CareType.fertilize => AppColors.fertilizerBrownBg,
-      CareType.repot => AppColors.repotOrangeBg,
-      CareType.sunlight => AppColors.sunlightYellowBg,
+      CareType.water => AppColors.careWaterLight,
+      CareType.fertilize => AppColors.careFertilizeLight,
+      CareType.repot => AppColors.careRepotLight,
+      CareType.sunlight => AppColors.careSunlightLight,
     };
   }
 

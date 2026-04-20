@@ -333,10 +333,10 @@ class CareLogScreen extends ConsumerWidget {
 
   Color _careTypeColor(CareType careType) {
     return switch (careType) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.sunlight => AppColors.sunlightYellow,
-      CareType.repot => AppColors.repotOrange,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.sunlight => AppColors.careSunlight,
+      CareType.repot => AppColors.careRepot,
     };
   }
 

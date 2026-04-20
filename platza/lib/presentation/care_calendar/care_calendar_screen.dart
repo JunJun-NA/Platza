@@ -162,7 +162,7 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
       runSpacing: AppSpacing.xs,
       children: [
         _LegendItem(
-          color: AppColors.waterBlue,
+          color: AppColors.careWater,
           label: '実施済み',
           isPerformed: true,
         ),
@@ -253,10 +253,10 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
 
   Color _careTypeColor(CareType type) {
     return switch (type) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.sunlight => AppColors.sunlightYellow,
-      CareType.repot => AppColors.repotOrange,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.sunlight => AppColors.careSunlight,
+      CareType.repot => AppColors.careRepot,
     };
   }
 
@@ -275,10 +275,10 @@ class _MarkerDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseColor = switch (event.careType) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.sunlight => AppColors.sunlightYellow,
-      CareType.repot => AppColors.repotOrange,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.sunlight => AppColors.careSunlight,
+      CareType.repot => AppColors.careRepot,
     };
 
     return Container(

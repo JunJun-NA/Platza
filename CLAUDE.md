@@ -60,6 +60,7 @@ cd platza && flutter run -t widgetbook/main.dart -d chrome
 - 状態管理は Riverpod を使い、可能な限り riverpod_generator（@riverpod アノテーション）を使う
 - コード生成が必要な変更をした場合は `dart run build_runner build --delete-conflicting-outputs` を実行する
 - 日本語でコミュニケーションする
+- **デザイン作業（Figma 書き込み・カラートークン追加など）を行う前に、[docs/design_system.md#claude-向けルール](docs/design_system.md#claude-向けルール) を必ず確認する**（Semantic → Primitive 必須、直 RGB 禁止、Component Property 命名規約など）
 
 ## テスト・品質ルール
 

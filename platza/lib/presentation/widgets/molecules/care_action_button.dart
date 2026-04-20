@@ -20,19 +20,19 @@ class CareActionButton extends StatelessWidget {
 
   Color get _color {
     return switch (careType) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.sunlight => AppColors.sunlightYellow,
-      CareType.repot => AppColors.repotOrange,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.sunlight => AppColors.careSunlight,
+      CareType.repot => AppColors.careRepot,
     };
   }
 
   Color get _bgColor {
     return switch (careType) {
-      CareType.water => AppColors.waterBlueBg,
-      CareType.fertilize => AppColors.fertilizerBrownBg,
-      CareType.sunlight => AppColors.sunlightYellowBg,
-      CareType.repot => AppColors.repotOrangeBg,
+      CareType.water => AppColors.careWaterLight,
+      CareType.fertilize => AppColors.careFertilizeLight,
+      CareType.sunlight => AppColors.careSunlightLight,
+      CareType.repot => AppColors.careRepotLight,
     };
   }
 

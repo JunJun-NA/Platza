@@ -48,6 +48,85 @@ Widgetbook で各コンポーネントのユースケースを確認できる。
 
 Figma ↔ コードの対応は各トークンファイル冒頭のコメントに記載されている。
 
+## Figma コンポーネントリファレンス
+
+Flutter 側のウィジェットと 1:1 対応する叩き台コンポーネントを Figma 上に配置している。
+Fill / Stroke / Text color は `Semantic Color` / `Primitive Color` Variables に、
+padding / itemSpacing は `Spacing` Variables（FLOAT）に bind 済み。
+Typography は `AppTypography` の値（fontSize / fontWeight）を直接指定（Text Styles 未整備）。
+
+- ファイル: https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design
+- Component ページ: https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=59-6
+
+| レイヤー | コンポーネント | Figma ノード |
+|---|---|---|
+| Atoms | StatusBadge（variant × status = 12 variants） | [73-34](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=73-34) |
+| Atoms | PixelContainer（small / medium / large / hero） | [74-10](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=74-10) |
+| Atoms | SectionHeader（default / with-action） | [74-17](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=74-17) |
+| Molecules | PlatzaCard（default / tappable） | [75-9](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=75-9) |
+| Molecules | CareActionButton（careType × state = 8 variants） | [76-34](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=76-34) |
+| Molecules | EmptyState（default / with-action） | [75-22](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=75-22) |
+| Organisms | ShellScaffold preview（NavigationBar 3 items） | [76-46](https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=76-46) |
+
+`PixelArtWidget` / `CareReactionOverlay` / `PhotoViewerDialog` は Canvas / ダイアログ依存のため Figma 側のコンポーネント化はスコープ外。
+
+### Component Properties（テキスト差し替え）
+
+以下のコンポーネントは Figma Component Property（TEXT）を公開しており、インスタンス側でテキストを差し替えできる。プロパティ名は Flutter 側の widget パラメータ名と揃えている。
+
+| コンポーネント | Property | 備考 |
+|---|---|---|
+| SectionHeader | `title`, `actionLabel` | actionLabel は with-action variant のみ |
+| PlatzaCard | `title`, `subtitle`, `hintLabel` | hintLabel は tappable variant のみ |
+| EmptyState | `emoji`, `title`, `subtitle`, `actionLabel` | actionLabel は with-action variant のみ |
+
+### お世話アクション色（care/\*）
+
+CareActionButton は `icon/care/{water,fertilize,sunlight,repot}`, `border/care/*`, `background/care/*Light` の Semantic Variables を参照する。Flutter 側は `AppColors.care{Water,Fertilize,Sunlight,Repot}` / `*Light` と対応。
+
+**Semantic は必ず Primitive を alias する**（直接 RGB 値は禁止）。fertilize 用には `brown/*` パレット（Material Design Brown, 50〜900 + A100/A200/A400/A700）を Primitive Color に追加済み。`*/care/fertilize` は `brown/400`、`background/care/fertilizeLight` は `brown/50` の alias。
+
+### Brand 系追加 Semantic
+
+- `background/brand`（lightGreen/700 alias） → EmptyState のアクションボタン bg。Flutter は `AppColors.backgroundBrand`
+- `border/brandSubtle`（lightGreen/100 alias） → PixelContainer の淡緑ボーダー。Flutter は `AppColors.borderBrandSubtle`
+
+## Claude 向けルール
+
+Claude Code がデザイン作業（Figma 書き込み / コード側トークン追加）を行うときの必須ルール。
+
+### 色の扱い
+
+1. **Component の色は必ず Semantic Color を参照**する。Primitive や hex 直指定は禁止
+2. **Semantic Color は必ず Primitive の `VARIABLE_ALIAS` にする**。直接 RGB を値にしない
+3. 意味的に合う Semantic が存在しない場合 → **ユーザーに Semantic 追加を依頼**する。自分で primitive/hex にフォールバックしない
+4. Primitive に該当色が存在しない場合 → **先に Primitive にパレットを追加**（既存の 50〜900 + A 系列スタイルに揃える）→ その後 Semantic で alias
+5. Flutter `AppColors.*` は Figma Semantic と異名同義で揃える（例: `text/care/water` ↔ `AppColors.careWater`）。`AppColors` は `AppPrimitiveColors.*` への alias として定義する
+
+### Spacing / Layout
+
+- `padding` / `itemSpacing` は Figma `Spacing` Variables（FLOAT, scope=GAP）に bind する
+- 数値直指定時は `AppSpacing` と一致する値のみ使用（4xs=2 / 3xs=4 / 2xs=6 / xs=8 / sm=12 / md=16 / lg=20 / xl=24 / 2xl=32 / 3xl=40 / 4xl=48）
+
+### Component Property（Figma）
+
+- 可変テキストは Figma Component Property（TEXT）として公開する
+- Property 名は **Flutter widget のパラメータ名と一致させる**（`title`, `subtitle`, `emoji`, `actionLabel` など）
+- variant 固有の Property（例: tappable の `hintLabel`）は該当 variant のテキストノードのみにバインド
+
+### Atomic Design 配置
+
+- `atoms`: 単独で意味を持つ最小要素（他 widget に依存しない）
+- `molecules`: atom を組み合わせた機能単位
+- `organisms`: 画面固有ロジックや外部依存を持つ UI ブロック
+- 判断軸は「壊したとき影響する別 component があるか」（なし→atom / 1-2個→molecule / ブロック全体→organism）
+
+### Figma ↔ コード同期
+
+- 新規 widget を追加 → `widgetbook/use_cases/<layer>/` にユースケース追加 → `dart run build_runner build --delete-conflicting-outputs`
+- ゴールデンテストは色が変わったら再生成（`flutter test --update-goldens <path>`）
+- Figma Component Property 追加は `addComponentProperty` で 1 プロパティずつ（複合操作は Figma 側でエラーになる場合あり、分割実行推奨）
+
 ## 命名規約
 
 - ウィジェット名は **単数形の名詞** を基本とする（`StatusBadge`, `CareActionButton`）
