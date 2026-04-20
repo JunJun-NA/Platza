@@ -28,7 +28,7 @@ class SectionHeader extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTypography.sectionHeader.copyWith(
+            style: AppTypography.heading.copyWith(
               color: Theme.of(context).colorScheme.primary,
             ),
           ),

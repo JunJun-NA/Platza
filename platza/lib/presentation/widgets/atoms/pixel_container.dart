@@ -40,8 +40,9 @@ class PixelContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor =
-        isDark ? AppColors.pixelBackgroundDark : AppColors.pixelBackground;
-    final borderColor = isDark ? AppColors.borderDark : AppColors.pixelBorder;
+        isDark ? AppColors.pixelBackgroundDark : AppColors.backgroundBase;
+    final borderColor =
+        isDark ? AppColors.borderDark : AppColors.borderBrandSubtle;
 
     return Container(
       width: width ?? (size == PixelContainerSize.hero ? double.infinity : size.dimension),

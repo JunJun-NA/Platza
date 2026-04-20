@@ -77,6 +77,7 @@ class AppColors {
   static const Color borderSelected = AppPrimitiveColors.blue800;
   static const Color borderInput = AppPrimitiveColors.lightGreen300;
   static const Color borderBrand = AppPrimitiveColors.lightGreen700;
+  static const Color borderBrandSubtle = AppPrimitiveColors.lightGreen100;
   static const Color borderDanger = AppPrimitiveColors.red600;
   static const Color borderWarning = AppPrimitiveColors.deepOrange600;
   static const Color borderSuccess = AppPrimitiveColors.lightGreen600;
@@ -98,6 +99,7 @@ class AppColors {
   // Background
   // =========================================
   static const Color backgroundBase = AppPrimitiveColors.lightGreen50;
+  static const Color backgroundBrand = AppPrimitiveColors.lightGreen700;
 
   // --- Surface ---
   static const Color surfacePrimary = Color(0xFFFFFFFF);     // grey/0
@@ -168,20 +170,18 @@ class AppColors {
   static const Color statusWiltingBg = AppPrimitiveColors.red50;
   static const Color statusBloomingBg = AppPrimitiveColors.pink50;
 
-  // お世話アクション
-  static const Color waterBlue = AppPrimitiveColors.lightBlue500;
-  static const Color fertilizerBrown = Color(0xFF8B6F47);
-  static const Color sunlightYellow = AppPrimitiveColors.amber400;
-  static const Color repotOrange = AppPrimitiveColors.deepOrange400;
-  static const Color waterBlueBg = AppPrimitiveColors.lightBlue50;
-  static const Color fertilizerBrownBg = Color(0xFFF5F0E8);
-  static const Color sunlightYellowBg = AppPrimitiveColors.amber50;
-  static const Color repotOrangeBg = AppPrimitiveColors.deepOrange50;
+  // お世話アクション（Figma Semantic: text|icon|border/care/* + background/care/*Light）
+  static const Color careWater = AppPrimitiveColors.lightBlue500;
+  static const Color careFertilize = AppPrimitiveColors.brown400;
+  static const Color careSunlight = AppPrimitiveColors.amber400;
+  static const Color careRepot = AppPrimitiveColors.deepOrange400;
+  static const Color careWaterLight = AppPrimitiveColors.lightBlue50;
+  static const Color careFertilizeLight = AppPrimitiveColors.brown50;
+  static const Color careSunlightLight = AppPrimitiveColors.amber50;
+  static const Color careRepotLight = AppPrimitiveColors.deepOrange50;
 
   // ドット絵表示エリア
-  static const Color pixelBackground = AppPrimitiveColors.lightGreen50;
-  static const Color pixelShadow = AppPrimitiveColors.lightGreen200;
-  static const Color pixelBorder = AppPrimitiveColors.lightGreen100;
+  // bg は backgroundBase, border は borderBrandSubtle を利用（Figma Semantic と一致）
 
   // セマンティック
   static const Color success = backgroundSuccess;

@@ -72,7 +72,7 @@ class CareLogScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
                 dateKey,
-                style: AppTypography.sectionHeader.copyWith(
+                style: AppTypography.heading.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
@@ -333,10 +333,10 @@ class CareLogScreen extends ConsumerWidget {
 
   Color _careTypeColor(CareType careType) {
     return switch (careType) {
-      CareType.water => AppColors.waterBlue,
-      CareType.fertilize => AppColors.fertilizerBrown,
-      CareType.sunlight => AppColors.sunlightYellow,
-      CareType.repot => AppColors.repotOrange,
+      CareType.water => AppColors.careWater,
+      CareType.fertilize => AppColors.careFertilize,
+      CareType.sunlight => AppColors.careSunlight,
+      CareType.repot => AppColors.careRepot,
     };
   }
 

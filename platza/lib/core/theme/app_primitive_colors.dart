@@ -50,6 +50,24 @@ class AppPrimitiveColors {
   static const Color blueA700 = Color(0xFF2962FF);
 
   // =========================================
+  // Brown
+  // =========================================
+  static const Color brown50 = Color(0xFFEFEBE9);
+  static const Color brown100 = Color(0xFFD7CCC8);
+  static const Color brown200 = Color(0xFFBCAAA4);
+  static const Color brown300 = Color(0xFFA1887F);
+  static const Color brown400 = Color(0xFF8D6E63);
+  static const Color brown500 = Color(0xFF795548);
+  static const Color brown600 = Color(0xFF6D4C41);
+  static const Color brown700 = Color(0xFF5D4037);
+  static const Color brown800 = Color(0xFF4E342E);
+  static const Color brown900 = Color(0xFF3E2723);
+  static const Color brownA100 = Color(0xFFD7CCC8);
+  static const Color brownA200 = Color(0xFFBCAAA4);
+  static const Color brownA400 = Color(0xFF8D6E63);
+  static const Color brownA700 = Color(0xFF5D4037);
+
+  // =========================================
   // Blue Grey
   // =========================================
   static const Color blueGrey50 = Color(0xFFECF1EE);

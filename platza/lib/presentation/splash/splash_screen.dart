@@ -268,7 +268,10 @@ class _SplashScreenState extends State<SplashScreen>
                   position: _titleSlide,
                   child: FadeTransition(
                     opacity: _titleFade,
-                    child: const Text('Platza', style: AppTypography.appTitle),
+                    child: Text(
+                      'Platza',
+                      style: AppTypography.display.copyWith(color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -280,7 +283,7 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _subtitleFade,
                     child: Text(
                       'ドット絵で育てる、植物のお世話',
-                      style: AppTypography.bodyMedium.copyWith(
+                      style: AppTypography.body.copyWith(
                         color: Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
@@ -303,7 +306,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Text(
                 'v0.1.0',
                 textAlign: TextAlign.center,
-                style: AppTypography.labelSmall.copyWith(
+                style: AppTypography.caption.copyWith(
                   color: Colors.white.withValues(alpha: 0.5),
                 ),
               ),

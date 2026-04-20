@@ -19,7 +19,9 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'Platza',
-          style: AppTypography.displaySmall.copyWith(
+          style: AppTypography.display.copyWith(
+            fontSize: 22,
+            letterSpacing: 1,
             color: Theme.of(context).textTheme.titleLarge?.color,
           ),
         ),

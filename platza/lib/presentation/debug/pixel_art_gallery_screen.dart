@@ -71,7 +71,7 @@ class PixelArtGalleryScreen extends StatelessWidget {
                                 height: 70,
                                 margin: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: AppColors.pixelBackground,
+                                  color: AppColors.backgroundBase,
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                     color: AppColors.borderLight,
