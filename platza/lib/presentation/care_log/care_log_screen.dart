@@ -72,7 +72,7 @@ class CareLogScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
                 dateKey,
-                style: AppTypography.sectionHeader.copyWith(
+                style: AppTypography.heading.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),

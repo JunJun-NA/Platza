@@ -71,7 +71,7 @@ class CareActionButton extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               careType.label,
-              style: AppTypography.actionLabel.copyWith(
+              style: AppTypography.label.copyWith(
                 color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),

@@ -42,18 +42,37 @@ Widgetbook で各コンポーネントのユースケースを確認できる。
 | 種別 | 定義 | 参照元 |
 |---|---|---|
 | Colors | `AppColors` / `AppPrimitiveColors` | Figma "Semantic Color" / "Primitive Color" |
-| Typography | `AppTypography` | Figma Text Styles |
+| Typography | `AppTypography` | Figma `typography/*` Text Styles |
 | Spacing | `AppSpacing` | Figma "Spacing" variables |
 | Shadows | `AppShadows` | Figma Effect Styles |
 
 Figma ↔ コードの対応は各トークンファイル冒頭のコメントに記載されている。
+
+### Typography（単一階層 10 スタイル）
+
+役割ベースで粒度の揃った 10 スタイル。`AppTypography.*` が正準 API で、Material TextTheme には `app_theme.dart` の `_buildTextTheme` 経由でマップ。
+
+| Figma Text Style | Flutter | サイズ / ウェイト | 主な用途 |
+|---|---|---|---|
+| `typography/display` | `AppTypography.display` | 36 / Bold / ls 4 | スプラッシュ、アプリ名 |
+| `typography/title` | `AppTypography.title` | 20 / Bold | 画面タイトル、AppBar |
+| `typography/subtitle` | `AppTypography.subtitle` | 16 / Semi Bold | カードタイトル |
+| `typography/heading` | `AppTypography.heading` | 14 / Bold | セクション区切り |
+| `typography/body` | `AppTypography.body` | 14 / Regular | 本文標準 |
+| `typography/bodyLarge` | `AppTypography.bodyLarge` | 16 / Regular | 強調本文 |
+| `typography/caption` | `AppTypography.caption` | 12 / Regular | サブタイトル、メタ |
+| `typography/label` | `AppTypography.label` | 12 / Medium | ナビ、アクションラベル |
+| `typography/button` | `AppTypography.button` | 14 / Medium | ボタン本体テキスト |
+| `typography/badge` | `AppTypography.badge` | 11 / Semi Bold | ステータスチップ |
+
+**M3 TextTheme マップ** (`_buildTextTheme` が自動構築): displayLarge ← display / titleLarge ← title / titleMedium ← subtitle / titleSmall ← heading / bodyLarge ← bodyLarge / bodyMedium ← body / bodySmall ← caption / labelLarge ← button / labelMedium ← label / labelSmall ← badge。Material Widget はこれで機能するが、**アプリコードは `AppTypography.*` を直接参照**する。
 
 ## Figma コンポーネントリファレンス
 
 Flutter 側のウィジェットと 1:1 対応する叩き台コンポーネントを Figma 上に配置している。
 Fill / Stroke / Text color は `Semantic Color` / `Primitive Color` Variables に、
 padding / itemSpacing は `Spacing` Variables（FLOAT）に bind 済み。
-Typography は `AppTypography` の値（fontSize / fontWeight）を直接指定（Text Styles 未整備）。
+Typography は `typography/*` Text Styles に bind（`AppTypography.*` と 1:1 対応）。
 
 - ファイル: https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design
 - Component ページ: https://www.figma.com/design/B2Nmm9pVpMhRGrK0yj5OYt/UI-Design?node-id=59-6

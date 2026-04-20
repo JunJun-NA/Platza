@@ -63,14 +63,14 @@ class PhotoViewerDialog extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                       child: Text(
                         photo.caption!,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: AppTypography.bodyLarge,
                       ),
                     ),
                   Text(
                     dateText,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtle,
-                        ),
+                    style: AppTypography.caption.copyWith(
+                      color: AppColors.textSubtle,
+                    ),
                   ),
                 ],
               ),

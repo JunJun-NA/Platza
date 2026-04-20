@@ -1,117 +1,71 @@
 import 'package:flutter/material.dart';
 
-/// タイポグラフィ定義
+/// タイポグラフィ定義（Figma `typography/*` Text Styles と 1:1 対応）
 ///
-/// PixelFont が利用可能な場合はピクセルフォントを適用。
-/// フォールバックとして標準フォントを使用。
+/// 役割ベースの単一階層 10 スタイル。Material TextTheme の
+/// M3 スロットには `app_theme.dart` の `_buildTextTheme` でマップしており、
+/// アプリコードは本クラスを正準 API として参照する。
 class AppTypography {
   AppTypography._();
 
-  // PixelFont がアセットに追加されたら 'PixelFont' に変更
-  static const String? _pixelFontFamily = null;
-
-  // --- 見出し ---
-  static const TextStyle displayLarge = TextStyle(
-    fontFamily: _pixelFontFamily,
+  /// スプラッシュ、アプリ名などのブランド表示
+  static const TextStyle display = TextStyle(
     fontSize: 36,
     fontWeight: FontWeight.bold,
     letterSpacing: 4,
   );
 
-  static const TextStyle displayMedium = TextStyle(
-    fontFamily: _pixelFontFamily,
-    fontSize: 28,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 2,
-  );
-
-  static const TextStyle displaySmall = TextStyle(
-    fontFamily: _pixelFontFamily,
-    fontSize: 22,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 1,
-  );
-
-  // --- タイトル ---
-  static const TextStyle titleLarge = TextStyle(
+  /// 画面タイトル、AppBar タイトル
+  static const TextStyle title = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle titleMedium = TextStyle(
+  /// カードタイトル、ダイアログ見出し
+  static const TextStyle subtitle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
 
-  static const TextStyle titleSmall = TextStyle(
+  /// セクション区切り（SectionHeader）
+  static const TextStyle heading = TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.bold,
   );
 
-  // --- 本文 ---
+  /// 本文標準
+  static const TextStyle body = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+  );
+
+  /// 強調本文、詳細画面の本文
   static const TextStyle bodyLarge = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
-  );
-
-  static const TextStyle bodySmall = TextStyle(
+  /// サブタイトル、タイムスタンプ、メタ情報
+  static const TextStyle caption = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,
   );
 
-  // --- ラベル ---
-  static const TextStyle labelLarge = TextStyle(
+  /// ナビバー、アクションラベル、タグ
+  static const TextStyle label = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
+
+  /// ボタン本体テキスト
+  static const TextStyle button = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
   );
 
-  static const TextStyle labelMedium = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
-
-  static const TextStyle labelSmall = TextStyle(
-    fontSize: 10,
-    fontWeight: FontWeight.w500,
-  );
-
-  // --- アプリ固有 ---
-
-  /// スプラッシュ画面のアプリ名
-  static const TextStyle appTitle = TextStyle(
-    fontFamily: _pixelFontFamily,
-    fontSize: 36,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 4,
-    color: Colors.white,
-  );
-
-  /// ナビバーのラベル
-  static const TextStyle navLabel = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
-
-  /// ステータスバッジのテキスト
+  /// ステータスチップ、ミニタグ
   static const TextStyle badge = TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w600,
-  );
-
-  /// お世話アクションボタンのラベル
-  static const TextStyle actionLabel = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
-
-  /// セクションヘッダー
-  static const TextStyle sectionHeader = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
   );
 }

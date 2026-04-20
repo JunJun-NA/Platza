@@ -115,14 +115,14 @@ class _SummaryCardItem extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxs),
           Text(
             value,
-            style: AppTypography.titleMedium.copyWith(
+            style: AppTypography.subtitle.copyWith(
               color: AppColors.textDefault,
             ),
           ),
           const SizedBox(height: AppSpacing.xxxs),
           Text(
             label,
-            style: AppTypography.labelSmall.copyWith(
+            style: AppTypography.label.copyWith(
               color: AppColors.textSubtlest,
             ),
           ),
@@ -164,7 +164,7 @@ class _WeeklyChart extends StatelessWidget {
                     if (count > 0)
                       Text(
                         '$count',
-                        style: AppTypography.labelSmall.copyWith(
+                        style: AppTypography.label.copyWith(
                           color: AppColors.textSubtle,
                         ),
                       ),
@@ -181,7 +181,7 @@ class _WeeklyChart extends StatelessWidget {
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       _dayLabels[index],
-                      style: AppTypography.labelSmall.copyWith(
+                      style: AppTypography.label.copyWith(
                         color: AppColors.textSubtlest,
                       ),
                     ),
@@ -239,7 +239,7 @@ class _CareTypeBreakdown extends StatelessWidget {
                   width: 100,
                   child: Text(
                     '${type.emoji} ${type.label}',
-                    style: AppTypography.bodySmall,
+                    style: AppTypography.caption,
                   ),
                 ),
                 Expanded(
@@ -273,7 +273,7 @@ class _CareTypeBreakdown extends StatelessWidget {
                   width: 36,
                   child: Text(
                     '$count回',
-                    style: AppTypography.labelMedium.copyWith(
+                    style: AppTypography.label.copyWith(
                       color: AppColors.textSubtle,
                     ),
                     textAlign: TextAlign.end,
@@ -301,7 +301,7 @@ class _PerPlantList extends StatelessWidget {
         child: Center(
           child: Text(
             'お世話データがありません',
-            style: AppTypography.bodySmall,
+            style: AppTypography.caption,
           ),
         ),
       );
@@ -320,12 +320,12 @@ class _PerPlantList extends StatelessWidget {
                     children: [
                       Text(
                         stats.plant.nickname,
-                        style: AppTypography.titleSmall,
+                        style: AppTypography.heading,
                       ),
                       const SizedBox(height: AppSpacing.xxxs),
                       Text(
                         'お世話 ${stats.careCount}回 / 連続 ${stats.plant.streakDays}日',
-                        style: AppTypography.bodySmall.copyWith(
+                        style: AppTypography.caption.copyWith(
                           color: AppColors.textSubtlest,
                         ),
                       ),
@@ -344,7 +344,7 @@ class _PerPlantList extends StatelessWidget {
                     ),
                     child: Text(
                       '🔥 ${stats.plant.streakDays}',
-                      style: AppTypography.labelMedium,
+                      style: AppTypography.label,
                     ),
                   ),
               ],

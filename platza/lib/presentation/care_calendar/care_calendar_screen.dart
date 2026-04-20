@@ -74,7 +74,7 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
           const SizedBox(height: AppSpacing.lg),
           Text(
             '${_formatDate(selected)} のお世話',
-            style: AppTypography.sectionHeader,
+            style: AppTypography.heading,
           ),
           const SizedBox(height: AppSpacing.sm),
           if (eventsOfSelected.isEmpty)

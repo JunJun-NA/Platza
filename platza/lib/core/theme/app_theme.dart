@@ -33,7 +33,7 @@ class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        titleTextStyle: AppTypography.titleLarge.copyWith(
+        titleTextStyle: AppTypography.title.copyWith(
           color: AppColors.textPrimaryLight,
         ),
         iconTheme: const IconThemeData(color: AppColors.textPrimaryLight),
@@ -67,11 +67,11 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppTypography.navLabel.copyWith(
+            return AppTypography.label.copyWith(
               color: AppColors.primaryDark,
             );
           }
-          return AppTypography.navLabel.copyWith(
+          return AppTypography.label.copyWith(
             color: AppColors.textTertiaryLight,
           );
         }),
@@ -111,13 +111,13 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppSpacing.borderRadiusMd,
           ),
-          textStyle: AppTypography.labelLarge,
+          textStyle: AppTypography.button,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryGreen,
-          textStyle: AppTypography.labelLarge,
+          textStyle: AppTypography.button,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -131,7 +131,7 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppSpacing.borderRadiusMd,
           ),
-          textStyle: AppTypography.labelLarge,
+          textStyle: AppTypography.button,
         ),
       ),
 
@@ -197,7 +197,7 @@ class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        titleTextStyle: AppTypography.titleLarge.copyWith(
+        titleTextStyle: AppTypography.title.copyWith(
           color: AppColors.textPrimaryDark,
         ),
         iconTheme: const IconThemeData(color: AppColors.textPrimaryDark),
@@ -228,11 +228,11 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppTypography.navLabel.copyWith(
+            return AppTypography.label.copyWith(
               color: AppColors.primaryLight,
             );
           }
-          return AppTypography.navLabel.copyWith(
+          return AppTypography.label.copyWith(
             color: AppColors.textTertiaryDark,
           );
         }),
@@ -270,13 +270,13 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppSpacing.borderRadiusMd,
           ),
-          textStyle: AppTypography.labelLarge,
+          textStyle: AppTypography.button,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryLight,
-          textStyle: AppTypography.labelLarge,
+          textStyle: AppTypography.button,
         ),
       ),
 
@@ -304,18 +304,16 @@ class AppTheme {
         : AppColors.textSecondaryDark;
 
     return TextTheme(
-      displayLarge: AppTypography.displayLarge.copyWith(color: primary),
-      displayMedium: AppTypography.displayMedium.copyWith(color: primary),
-      displaySmall: AppTypography.displaySmall.copyWith(color: primary),
-      titleLarge: AppTypography.titleLarge.copyWith(color: primary),
-      titleMedium: AppTypography.titleMedium.copyWith(color: primary),
-      titleSmall: AppTypography.titleSmall.copyWith(color: primary),
+      displayLarge: AppTypography.display.copyWith(color: primary),
+      titleLarge: AppTypography.title.copyWith(color: primary),
+      titleMedium: AppTypography.subtitle.copyWith(color: primary),
+      titleSmall: AppTypography.heading.copyWith(color: primary),
       bodyLarge: AppTypography.bodyLarge.copyWith(color: primary),
-      bodyMedium: AppTypography.bodyMedium.copyWith(color: primary),
-      bodySmall: AppTypography.bodySmall.copyWith(color: secondary),
-      labelLarge: AppTypography.labelLarge.copyWith(color: primary),
-      labelMedium: AppTypography.labelMedium.copyWith(color: secondary),
-      labelSmall: AppTypography.labelSmall.copyWith(color: secondary),
+      bodyMedium: AppTypography.body.copyWith(color: primary),
+      bodySmall: AppTypography.caption.copyWith(color: secondary),
+      labelLarge: AppTypography.button.copyWith(color: primary),
+      labelMedium: AppTypography.label.copyWith(color: secondary),
+      labelSmall: AppTypography.badge.copyWith(color: secondary),
     );
   }
 }
