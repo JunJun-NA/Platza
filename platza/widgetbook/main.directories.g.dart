@@ -14,6 +14,8 @@ import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 import 'use_cases/atoms/care_type_icon_container_use_case.dart'
     as _asset_platza_widgetbook_use_cases_atoms_care_type_icon_container_use_case;
+import 'use_cases/atoms/percentage_bar_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_atoms_percentage_bar_use_case;
 import 'use_cases/atoms/pixel_art_widget_use_case.dart'
     as _asset_platza_widgetbook_use_cases_atoms_pixel_art_widget_use_case;
 import 'use_cases/atoms/pixel_container_use_case.dart'
@@ -24,6 +26,12 @@ import 'use_cases/atoms/status_badge_use_case.dart'
     as _asset_platza_widgetbook_use_cases_atoms_status_badge_use_case;
 import 'use_cases/molecules/care_action_button_use_case.dart'
     as _asset_platza_widgetbook_use_cases_molecules_care_action_button_use_case;
+import 'use_cases/molecules/care_event_card_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_molecules_care_event_card_use_case;
+import 'use_cases/molecules/care_log_entry_row_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_molecules_care_log_entry_row_use_case;
+import 'use_cases/molecules/day_bar_chart_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_molecules_day_bar_chart_use_case;
 import 'use_cases/molecules/empty_state_use_case.dart'
     as _asset_platza_widgetbook_use_cases_molecules_empty_state_use_case;
 import 'use_cases/molecules/link_navigation_card_use_case.dart'
@@ -32,6 +40,10 @@ import 'use_cases/molecules/platza_card_use_case.dart'
     as _asset_platza_widgetbook_use_cases_molecules_platza_card_use_case;
 import 'use_cases/molecules/schedule_status_badge_use_case.dart'
     as _asset_platza_widgetbook_use_cases_molecules_schedule_status_badge_use_case;
+import 'use_cases/molecules/selection_tile_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_molecules_selection_tile_use_case;
+import 'use_cases/molecules/stat_summary_card_use_case.dart'
+    as _asset_platza_widgetbook_use_cases_molecules_stat_summary_card_use_case;
 import 'use_cases/organisms/care_reaction_overlay_use_case.dart'
     as _asset_platza_widgetbook_use_cases_organisms_care_reaction_overlay_use_case;
 import 'use_cases/organisms/photo_viewer_dialog_use_case.dart'
@@ -57,6 +69,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _asset_platza_widgetbook_use_cases_atoms_care_type_icon_container_use_case
                             .careTypeIconContainerDefault,
+                  )
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'PercentageBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_atoms_percentage_bar_use_case
+                            .percentageBarDefault,
                   )
                 ],
               ),
@@ -145,6 +168,63 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'CareEventCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Performed',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_care_event_card_use_case
+                            .careEventCardPerformed,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Scheduled',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_care_event_card_use_case
+                            .careEventCardScheduled,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'CareLogEntryRow',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_care_log_entry_row_use_case
+                            .careLogEntryRowDefault,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Without note',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_care_log_entry_row_use_case
+                            .careLogEntryRowNoNote,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'DayBarChart',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_day_bar_chart_use_case
+                            .dayBarChartDefault,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Empty',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_day_bar_chart_use_case
+                            .dayBarChartEmpty,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Spiked',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_day_bar_chart_use_case
+                            .dayBarChartSpiked,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'EmptyState',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -227,6 +307,34 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _asset_platza_widgetbook_use_cases_molecules_schedule_status_badge_use_case
                             .scheduleStatusBadgeToday,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'SelectionTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_selection_tile_use_case
+                            .selectionTileDefault,
+                  )
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'StatSummaryCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_stat_summary_card_use_case
+                            .statSummaryCardDefault,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Three up',
+                    builder:
+                        _asset_platza_widgetbook_use_cases_molecules_stat_summary_card_use_case
+                            .statSummaryCardThreeUp,
                   ),
                 ],
               ),

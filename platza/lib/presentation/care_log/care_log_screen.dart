@@ -88,39 +88,11 @@ class CareLogScreen extends ConsumerWidget {
   Widget _buildLogEntry(BuildContext context, WidgetRef ref, CareLog log) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: PlatzaCard(
+      child: CareLogEntryRow(
+        careType: log.careType,
+        time: _formatTime(log.performedAt),
+        note: log.note,
         onTap: () => _showEditSheet(context, ref, log),
-        child: Row(
-          children: [
-            // お世話種類のアイコン
-            CareTypeIconContainer(careType: log.careType),
-            const SizedBox(width: AppSpacing.md),
-            // ログ情報
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    log.careType.label,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  if (log.note != null && log.note!.isNotEmpty)
-                    Text(
-                      log.note!,
-                      style: Theme.of(context).textTheme.bodySmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                ],
-              ),
-            ),
-            // 時刻
-            Text(
-              _formatTime(log.performedAt),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
       ),
     );
   }

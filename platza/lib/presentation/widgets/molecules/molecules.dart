@@ -1,5 +1,10 @@
 export 'care_action_button.dart';
+export 'care_event_card.dart';
+export 'care_log_entry_row.dart';
+export 'day_bar_chart.dart';
 export 'empty_state.dart';
 export 'link_navigation_card.dart';
 export 'platza_card.dart';
 export 'schedule_status_badge.dart';
+export 'selection_tile.dart';
+export 'stat_summary_card.dart';

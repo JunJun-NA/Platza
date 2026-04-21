@@ -8,6 +8,7 @@ import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/entities/entities.dart';
 import 'package:platza/domain/enums/enums.dart';
+import 'package:platza/presentation/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 /// 植物登録画面 - カテゴリ→種類→置き場所→名前の4ステップ
@@ -104,35 +105,6 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
     );
   }
 
-  Widget _buildSelectionTile({
-    required String title,
-    String? subtitle,
-    Widget? leading,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.all12,
-          side: BorderSide(
-            color: isSelected ? AppColors.primaryGreen : AppColors.borderLight,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        leading: leading,
-        title: Text(title),
-        subtitle: subtitle != null
-            ? Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis)
-            : null,
-        selected: isSelected,
-        selectedTileColor: AppColors.primaryGreen.withValues(alpha: 0.05),
-        onTap: onTap,
-      ),
-    );
-  }
-
   Widget _buildCategoryStep() {
     return Column(
       children: [
@@ -158,7 +130,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
         const SizedBox(height: AppSpacing.md),
         // 手動カテゴリ選択
         ...PlantCategory.values.map((category) {
-          return _buildSelectionTile(
+          return SelectionTile(
             title: category.label,
             leading: Text(
               category == PlantCategory.succulent ? '🪴' : '🌵',
@@ -389,7 +361,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
     final speciesList = PlantSpeciesData.getByCategory(_selectedCategory!);
     return Column(
       children: speciesList.map((species) {
-        return _buildSelectionTile(
+        return SelectionTile(
           title: species.name,
           subtitle: species.description,
           isSelected: _selectedSpecies?.id == species.id,
@@ -402,7 +374,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
   Widget _buildLocationStep() {
     return Column(
       children: PlantLocation.values.map((location) {
-        return _buildSelectionTile(
+        return SelectionTile(
           title: location.label,
           leading: Text(location.emoji, style: const TextStyle(fontSize: 32)),
           isSelected: _selectedLocation == location,

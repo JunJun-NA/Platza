@@ -188,51 +188,14 @@ class _CareCalendarScreenState extends ConsumerState<CareCalendarScreen> {
   }
 
   Widget _buildEventCard(BuildContext context, CareCalendarEvent event) {
-    final note = event.log?.note;
-
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: PlatzaCard(
-        child: Row(
-          children: [
-            CareTypeIconContainer(careType: event.careType),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    event.careType.label,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    event.isPerformed ? '実施済み' : '予定',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: event.isPerformed
-                              ? AppColors.textSuccess
-                              : AppColors.textSubtle,
-                        ),
-                  ),
-                  if (note != null && note.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.xxs),
-                      child: Text(
-                        note,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            if (event.log != null)
-              Text(
-                _formatTime(event.log!.performedAt),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
-        ),
+      child: CareEventCard(
+        careType: event.careType,
+        isPerformed: event.isPerformed,
+        note: event.log?.note,
+        time:
+            event.log != null ? _formatTime(event.log!.performedAt) : null,
       ),
     );
   }
