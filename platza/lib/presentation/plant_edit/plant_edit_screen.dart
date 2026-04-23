@@ -12,6 +12,7 @@ import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/entities/entities.dart';
 import 'package:platza/domain/enums/enums.dart';
+import 'package:platza/presentation/widgets/widgets.dart';
 
 /// 植物編集画面 - ニックネームと置き場所を変更、削除も可能
 class PlantEditScreen extends ConsumerStatefulWidget {
@@ -297,23 +298,11 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
   }
 
   Widget _buildLocationTile(PlantLocation location) {
-    final isSelected = _selectedLocation == location;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.all12,
-          side: BorderSide(
-            color: isSelected ? AppColors.primaryGreen : AppColors.borderLight,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        leading: Text(location.emoji, style: const TextStyle(fontSize: 32)),
-        title: Text(location.label),
-        selected: isSelected,
-        selectedTileColor: AppColors.primaryGreen.withValues(alpha: 0.05),
-        onTap: () => setState(() => _selectedLocation = location),
-      ),
+    return SelectionTile(
+      title: location.label,
+      leading: Text(location.emoji, style: const TextStyle(fontSize: 32)),
+      isSelected: _selectedLocation == location,
+      onTap: () => setState(() => _selectedLocation = location),
     );
   }
 

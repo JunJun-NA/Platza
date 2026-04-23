@@ -38,7 +38,7 @@ class StatisticsScreen extends ConsumerWidget {
               _SummaryCards(summary: summary),
               const SizedBox(height: AppSpacing.lg),
               const SectionHeader(title: '今週のお世話'),
-              _WeeklyChart(dailyActivity: summary.dailyActivity),
+              DayBarChart(dailyActivity: summary.dailyActivity),
               const SizedBox(height: AppSpacing.lg),
               const SectionHeader(title: 'ケア種別の内訳'),
               _CareTypeBreakdown(breakdown: summary.careTypeBreakdown),
@@ -64,7 +64,7 @@ class _SummaryCards extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _SummaryCardItem(
+          child: StatSummaryCard(
             emoji: '🌿',
             label: '植物数',
             value: '${summary.totalPlants}',
@@ -72,7 +72,7 @@ class _SummaryCards extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
-          child: _SummaryCardItem(
+          child: StatSummaryCard(
             emoji: '🔥',
             label: '最長連続',
             value: '${summary.bestStreak}日',
@@ -80,118 +80,13 @@ class _SummaryCards extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
-          child: _SummaryCardItem(
+          child: StatSummaryCard(
             emoji: '✅',
             label: '今月のお世話',
             value: '${summary.monthlyCareCount}回',
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SummaryCardItem extends StatelessWidget {
-  const _SummaryCardItem({
-    required this.emoji,
-    required this.label,
-    required this.value,
-  });
-
-  final String emoji;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return PlatzaCard(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.md,
-      ),
-      child: Column(
-        children: [
-          Text(emoji, style: const TextStyle(fontSize: 24)),
-          const SizedBox(height: AppSpacing.xxs),
-          Text(
-            value,
-            style: AppTypography.subtitle.copyWith(
-              color: AppColors.textDefault,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xxxs),
-          Text(
-            label,
-            style: AppTypography.label.copyWith(
-              color: AppColors.textSubtlest,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 今週のお世話バーチャート
-class _WeeklyChart extends StatelessWidget {
-  const _WeeklyChart({required this.dailyActivity});
-
-  final List<int> dailyActivity;
-
-  static const _dayLabels = ['月', '火', '水', '木', '金', '土', '日'];
-
-  @override
-  Widget build(BuildContext context) {
-    final maxCount =
-        dailyActivity.isEmpty ? 1 : dailyActivity.reduce((a, b) => a > b ? a : b);
-    final effectiveMax = maxCount == 0 ? 1 : maxCount;
-
-    return PlatzaCard(
-      child: SizedBox(
-        height: 140,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: List.generate(7, (index) {
-            final count = index < dailyActivity.length ? dailyActivity[index] : 0;
-            final barHeight = (count / effectiveMax) * 80;
-
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (count > 0)
-                      Text(
-                        '$count',
-                        style: AppTypography.label.copyWith(
-                          color: AppColors.textSubtle,
-                        ),
-                      ),
-                    const SizedBox(height: AppSpacing.xxs),
-                    Container(
-                      height: count > 0 ? barHeight : 4,
-                      decoration: BoxDecoration(
-                        color: count > 0
-                            ? AppColors.primaryGreen
-                            : AppColors.borderLight,
-                        borderRadius: AppRadius.all8,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      _dayLabels[index],
-                      style: AppTypography.label.copyWith(
-                        color: AppColors.textSubtlest,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
     );
   }
 }
@@ -243,29 +138,10 @@ class _CareTypeBreakdown extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ClipRRect(
-                    borderRadius: AppRadius.all8,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: _bgColorForType(type),
-                            borderRadius: AppRadius.all8,
-                          ),
-                        ),
-                        FractionallySizedBox(
-                          widthFactor: ratio,
-                          child: Container(
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: _colorForType(type),
-                              borderRadius: AppRadius.all8,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: PercentageBar(
+                    ratio: ratio,
+                    activeColor: _colorForType(type),
+                    trackColor: _bgColorForType(type),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
