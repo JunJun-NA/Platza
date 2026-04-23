@@ -11,7 +11,9 @@ platform :ios do
       in_house: false
     )
 
-    ipa_path = Dir[File.expand_path("../build/ios/ipa/*.ipa", __dir__)].first
+    # Fastfile は platza/ios/fastlane/ に配置されているので、
+    # flutter build ipa の出力 (platza/build/ios/ipa/) は 2 階層上。
+    ipa_path = Dir[File.expand_path("../../build/ios/ipa/*.ipa", __dir__)].first
     UI.user_error!("No IPA found under platza/build/ios/ipa/") if ipa_path.nil?
     UI.message("Uploading #{ipa_path}")
 
