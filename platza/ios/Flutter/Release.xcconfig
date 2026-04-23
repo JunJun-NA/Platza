@@ -1,2 +1,11 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+
+// Release ビルド (flutter build ipa / Archive) は Manual signing で行う。
+// CI (GitHub Actions) では Apple ID ログインができず Automatic signing が使えないため。
+// ローカル Archive も同じ設定で走るので、Platza App Store profile をインストール
+// しておくこと (docs/ci-testflight.md 参照)。
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Distribution
+PROVISIONING_PROFILE_SPECIFIER = Platza App Store
+DEVELOPMENT_TEAM = CBM628X293
