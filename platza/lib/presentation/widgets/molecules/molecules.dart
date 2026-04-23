@@ -6,5 +6,6 @@ export 'empty_state.dart';
 export 'link_navigation_card.dart';
 export 'platza_card.dart';
 export 'schedule_status_badge.dart';
+export 'seasonal_care_advice_card.dart';
 export 'selection_tile.dart';
 export 'stat_summary_card.dart';
