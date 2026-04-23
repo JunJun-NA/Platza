@@ -1,4 +1,4 @@
-package com.platza.platza
+package com.nakanojunya.platza
 
 import io.flutter.embedding.android.FlutterActivity
 

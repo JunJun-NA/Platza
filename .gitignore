@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Secrets (App Store Connect API Key / certificates)
+# ローカルでのみ保持し、CI へは GitHub Secrets 経由で渡す
+key/
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+
+# Flutter build artifacts (サブディレクトリ内の build/ も除外)
+**/build/
