@@ -11,6 +11,7 @@ import 'package:platza/core/constants/app_routes.dart';
 import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/entities/entities.dart';
+import 'package:platza/domain/entities/plant_species_care_advice.dart';
 import 'package:platza/domain/enums/enums.dart';
 import 'package:platza/application/providers/database_provider.dart';
 import 'package:platza/presentation/widgets/widgets.dart';
@@ -20,7 +21,10 @@ import 'package:uuid/uuid.dart';
 class PlantDetailScreen extends ConsumerStatefulWidget {
   final String plantId;
 
-  const PlantDetailScreen({super.key, required this.plantId});
+  /// 現在日時のオーバーライド（テスト用）。未指定時は `DateTime.now()`。
+  final DateTime? now;
+
+  const PlantDetailScreen({super.key, required this.plantId, this.now});
 
   @override
   ConsumerState<PlantDetailScreen> createState() => _PlantDetailScreenState();
@@ -183,6 +187,9 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
                 const SizedBox(height: AppSpacing.lg),
                 // 次のお世話タイミング
                 _buildNextCareSection(context),
+                const SizedBox(height: AppSpacing.lg),
+                // 季節に応じたお世話アドバイス
+                _buildSeasonalAdviceSection(species),
                 const SizedBox(height: AppSpacing.xl),
                 // お世話アクションボタン
                 Padding(
@@ -434,6 +441,18 @@ class _PlantDetailScreenState extends ConsumerState<PlantDetailScreen>
         const SizedBox(height: AppSpacing.xs),
         Text(value, style: Theme.of(context).textTheme.titleMedium),
       ],
+    );
+  }
+
+  /// 季節ごとのお世話アドバイスセクション
+  Widget _buildSeasonalAdviceSection(PlantSpecies species) {
+    final season = Season.fromDate(widget.now ?? DateTime.now());
+    return Padding(
+      padding: AppSpacing.screenPaddingHorizontal,
+      child: SeasonalCareAdviceCard(
+        season: season,
+        advice: species.careAdviceFor(season),
+      ),
     );
   }
 
