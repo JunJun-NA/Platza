@@ -1,0 +1,34 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ユーザー所有データ: 本人のみ読み書き可
+    match /users/{uid}/{document=**} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // 植物種マスタ: 認証済みユーザーは読み取りのみ。書き込みは Cloud Functions / 管理者のみ。
+    match /species/{speciesId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // 疎通確認用（Emulator 専用想定。本番ルールへ移行時に削除する）
+    match /_health/{document=**} {
+      allow read, write: if true;
+    }
+
+    // それ以外は全拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

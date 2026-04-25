@@ -51,6 +51,13 @@ dependencies:
   # カレンダー
   table_calendar: any
 
+  # Firebase（バックエンド）
+  firebase_core: any
+  firebase_auth: any
+  cloud_firestore: any
+  firebase_storage: any
+  firebase_messaging: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -62,6 +69,7 @@ dev_dependencies:
   riverpod_generator: any
   mockito: any
   sqlite3: any
+  fake_cloud_firestore: any
 
   # Widgetbook（コンポーネントカタログ）
   widgetbook: any
