@@ -12,14 +12,12 @@ key/
 # Flutter build artifacts (サブディレクトリ内の build/ も除外)
 **/build/
 
-# Firebase 実プロジェクト設定（dev/prod 用は次ストーリで導入）
-# `flutterfire configure` で生成される flavor 別ファイルや
-# ネイティブの認証情報はリポジトリに含めない。
-**/google-services.json
-**/GoogleService-Info.plist
-**/firebase_app_id_file.json
-platza/lib/firebase_options_dev.dart
-platza/lib/firebase_options_prod.dart
+# Firebase
+# google-services.json / GoogleService-Info.plist / firebase_options_*.dart は
+# Firebase の API キーを含むがクライアントに配布される公開情報であり、機密ではない。
+# 実際のセキュリティ境界は Firestore / Storage Rules と App Check で担保する。
+# https://firebase.google.com/docs/projects/api-keys
+# したがってこれらはリポジトリにコミットする方針。
 .firebase/
 firebase-debug.log
 firestore-debug.log

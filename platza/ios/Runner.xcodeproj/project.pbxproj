@@ -235,6 +235,7 @@
 				B314F4042F9A2DA100CA8D32 /* Generate dSYMs for Native Assets */,
 				B9296AFA8EB7EBB0AA514003 /* [CP] Embed Pods Frameworks */,
 				078C612E5839968A94EE090A /* [CP] Copy Pods Resources */,
+				C0F28E5D8A351C5F4E137513 /* Copy GoogleService-Info.plist (flavor) */,
 			);
 			buildRules = (
 			);
@@ -411,6 +412,27 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C0F28E5D8A351C5F4E137513 /* Copy GoogleService-Info.plist (flavor) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Runner/Firebase/dev/GoogleService-Info.plist",
+				"$(SRCROOT)/Runner/Firebase/prod/GoogleService-Info.plist",
+			);
+			name = "Copy GoogleService-Info.plist (flavor)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PRODUCT_NAME).app/GoogleService-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/scripts/copy_firebase_config.sh\"\n";
 		};
 		EC4E85C7E8A5AC4021E97EDE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

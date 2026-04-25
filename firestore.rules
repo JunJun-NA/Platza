@@ -21,11 +21,6 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // 疎通確認用（Emulator 専用想定。本番ルールへ移行時に削除する）
-    match /_health/{document=**} {
-      allow read, write: if true;
-    }
-
     // それ以外は全拒否
     match /{document=**} {
       allow read, write: if false;

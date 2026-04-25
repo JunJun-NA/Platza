@@ -1,32 +1,19 @@
-// Firebase 初期設定（flavor 切替対応）
+// flavor に応じた Firebase 初期化オプションを返す。
 //
-// `flutterfire configure --out=lib/firebase_options_dev.dart --project=platza-dev`
-// などで dev/prod の実プロジェクト設定が生成されたら、本ファイルの
-// `firebaseOptionsForFlavor` をそれら生成ファイルの `DefaultFirebaseOptions.currentPlatform`
-// に差し替える。
-//
-// 現状はどちらの flavor も emulator 用 demo 設定を返す。
-// `demo-` プレフィックスの projectId は Firebase Emulator Suite 公式の
-// デモプロジェクトで、実環境には接続しない。
-// https://firebase.google.com/docs/emulator-suite/connect_and_prototype#choose_a_firebase_project
-
+// 実体は `firebase_options_dev.dart` / `firebase_options_prod.dart` に分離している。
+// それぞれ Firebase Console からダウンロードした設定ファイル（plist / json）と
+// 同じ値を持つ。
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:platza/core/env/flavor.dart';
+import 'package:platza/firebase_options_dev.dart';
+import 'package:platza/firebase_options_prod.dart';
 
 FirebaseOptions firebaseOptionsForFlavor(Flavor flavor) {
   switch (flavor) {
     case Flavor.dev:
-      return _demoOptions;
+      return DevFirebaseOptions.currentPlatform;
     case Flavor.prod:
-      return _demoOptions;
+      return ProdFirebaseOptions.currentPlatform;
   }
 }
-
-const FirebaseOptions _demoOptions = FirebaseOptions(
-  apiKey: 'demo-api-key',
-  appId: '1:000000000000:web:0000000000000000000000',
-  messagingSenderId: '000000000000',
-  projectId: 'demo-platza',
-  storageBucket: 'demo-platza.appspot.com',
-);

@@ -7,8 +7,8 @@ dev / prod の 2 環境を Flutter flavor で切り替える。
 
 | Flavor | 用途 | Bundle ID (iOS) | applicationId (Android) | 表示名 | アイコン | Firebase プロジェクト |
 |---|---|---|---|---|---|---|
-| `dev` | 開発・検証 | `com.nakanojunya.platza.dev` | `com.nakanojunya.platza.dev` | Platza dev | DEV バッジ付き | `platza-dev`（Phase 2 以降） |
-| `prod` | 本番 | `com.nakanojunya.platza` | `com.nakanojunya.platza` | Platza | 通常 | `platza-prod`（Phase 2 以降） |
+| `dev` | 開発・検証 | `com.nakanojunya.platza.dev` | `com.nakanojunya.platza.dev` | Platza dev | DEV バッジ付き | `platza-dev` |
+| `prod` | 本番 | `com.nakanojunya.platza` | `com.nakanojunya.platza` | Platza | 通常 | `platza-prod` |
 
 ## 起動方法
 
@@ -113,18 +113,40 @@ Claude 側の作業:
 - [x] Flutter/Configuration 別 xcconfig を 6 個追加し pbxproj を張り直し（`scripts/wire_ios_xcconfigs.rb`）
 - [x] TestFlight CI を `--flavor=prod` 対応に変更
 
-### Phase 2（Firebase 実プロジェクト接続、要 Firebase Console 作業）
+### Phase 2（完了）
 
-junya 側の事前作業:
-- [ ] Firebase Console で `platza-dev` と `platza-prod` プロジェクトを作成（リージョン `asia-northeast1`）
-- [ ] 各プロジェクトで iOS / Android アプリを登録（Bundle ID / applicationId は本ドキュメント上記の通り）
-- [ ] FlutterFire CLI で `flutterfire configure --project=platza-dev --out=lib/firebase_options_dev.dart`
-- [ ] 同じく `flutterfire configure --project=platza-prod --out=lib/firebase_options_prod.dart`
-- [ ] 生成された `GoogleService-Info.plist` / `google-services.json` を flavor 別ディレクトリに配置
+junya 側の作業（実施済み）:
+- [x] Firebase Console で `platza-dev` と `platza-prod` プロジェクトを作成
+- [x] 各プロジェクトで iOS / Android アプリを登録（Bundle ID / applicationId は本ドキュメント上記の通り）
+- [x] `GoogleService-Info.plist` / `google-services.json` をダウンロード
 
 Claude 側の作業:
-- [ ] `lib/firebase_options.dart` の `_demoOptions` を `firebase_options_dev.dart` / `firebase_options_prod.dart` の import に差し替え
-- [ ] `connectToFirebaseEmulators()` の起動条件を `kDebugMode && AppEnv.isDev` に変更（prod は debug でも実環境）
-- [ ] `firestore.rules` から `_health` ブロックを削除
-- [ ] `.firebaserc` に dev / prod alias を設定
-- [ ] README に `firebase emulators:start` の起動手順を追記
+- [x] `lib/firebase_options_dev.dart` / `lib/firebase_options_prod.dart` を生成
+- [x] `lib/firebase_options.dart` を実プロジェクト options に切替
+- [x] iOS plist を `platza/ios/Runner/Firebase/{dev,prod}/` に配置
+- [x] Android google-services.json を `platza/android/app/src/{dev,prod}/` に配置
+- [x] iOS Build Phase で flavor に応じて plist をコピーする Run Script を追加
+- [x] Android `com.google.gms.google-services` プラグインを適用
+- [x] `connectToFirebaseEmulators()` の起動条件を `kDebugMode && AppEnv.isDev` に変更
+- [x] `firestore.rules` から `_health` ブロックを削除
+- [x] `.firebaserc` に dev / prod alias を設定
+- [x] gitignore 方針を更新（Firebase クライアント設定は API キーを含むがクライアント配布される公開情報なので commit する）
+
+## ローカル開発: Emulator Suite
+
+dev × debug ビルドのときだけ自動で emulator に接続する。
+emulator を別ターミナルで起動しておく:
+
+```bash
+# 初回のみ
+npm install -g firebase-tools
+
+# emulator 起動
+firebase emulators:start
+```
+
+prod プロジェクトに切り替える場合:
+```bash
+firebase use prod   # → platza-prod
+firebase use dev    # → platza-dev に戻す
+```
