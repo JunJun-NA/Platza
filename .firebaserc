@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "platza-dev",
+    "dev": "platza-dev",
+    "prod": "platza-prod"
+  }
+}

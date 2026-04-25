@@ -17,10 +17,13 @@ Future<void> bootstrap(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   AppEnv.init(flavor);
 
-  // Firebase 初期化。debug ビルド時は Emulator Suite に接続する。
-  // 実プロジェクト接続後はここで本番にも接続する想定。
+  // Firebase 初期化。debug ビルド × dev flavor のときだけ Emulator Suite に接続する。
+  // - debug × dev: ローカル emulator（オフラインで安全に試行錯誤）
+  // - debug × prod: 実 platza-prod（prod 検証用）
+  // - release × dev: 実 platza-dev
+  // - release × prod: 実 platza-prod
   await Firebase.initializeApp(options: firebaseOptionsForFlavor(flavor));
-  if (kDebugMode) {
+  if (kDebugMode && flavor.isDev) {
     await connectToFirebaseEmulators();
   }
 

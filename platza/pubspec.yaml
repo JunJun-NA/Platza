@@ -69,7 +69,6 @@ dev_dependencies:
   riverpod_generator: any
   mockito: any
   sqlite3: any
-  fake_cloud_firestore: any
 
   # Widgetbook（コンポーネントカタログ）
   widgetbook: any

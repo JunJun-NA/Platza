@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "605497061714",
+    "project_id": "platza-prod",
+    "storage_bucket": "platza-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605497061714:android:9d40368956708f53564a8b",
+        "android_client_info": {
+          "package_name": "com.nakanojunya.platza"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArSyXHLDE4pZYEDICah_6-CowWq02JUu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
