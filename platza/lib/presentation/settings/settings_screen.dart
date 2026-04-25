@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:platza/application/providers/notification_providers.dart';
 import 'package:platza/application/providers/user_settings_providers.dart';
 import 'package:platza/domain/entities/entities.dart';
+import 'package:platza/presentation/account/account_link_section.dart';
 import 'package:platza/presentation/widgets/widgets.dart';
 
 /// 設定画面 - 通知・テーマなどの設定
@@ -32,6 +33,9 @@ class SettingsScreen extends ConsumerWidget {
   ) {
     return ListView(
       children: [
+        const SectionHeader(title: 'アカウント'),
+        const AccountLinkSection(),
+        const Divider(),
         const SectionHeader(title: '通知'),
         SwitchListTile(
           title: const Text('通知を有効にする'),

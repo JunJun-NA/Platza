@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +9,7 @@ import 'package:platza/app.dart';
 import 'package:platza/application/providers/notification_providers.dart';
 import 'package:platza/core/env/flavor.dart';
 import 'package:platza/firebase_options.dart';
+import 'package:platza/infrastructure/services/auth_service.dart';
 import 'package:platza/infrastructure/services/firebase_emulator.dart';
 import 'package:platza/infrastructure/services/notification_service.dart';
 
@@ -23,9 +25,13 @@ Future<void> bootstrap(Flavor flavor) async {
   // - release × dev: 実 platza-dev
   // - release × prod: 実 platza-prod
   await Firebase.initializeApp(options: firebaseOptionsForFlavor(flavor));
-  if (kDebugMode && flavor.isDev) {
+  if (kDebugMode && flavor.isDev && shouldConnectToFirebaseEmulators()) {
     await connectToFirebaseEmulators();
   }
+
+  // 起動時にゲスト（匿名）としてサインインする。
+  // 既にサインイン済みなら何もしない。
+  await AuthService(FirebaseAuth.instance).ensureSignedIn();
 
   // 日本語ロケールの日付フォーマット初期化（table_calendar で使用）
   await initializeDateFormatting('ja_JP');
