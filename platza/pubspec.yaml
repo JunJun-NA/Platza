@@ -58,6 +58,10 @@ dependencies:
   firebase_storage: any
   firebase_messaging: any
 
+  # 認証
+  sign_in_with_apple: any
+  crypto: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -69,6 +73,7 @@ dev_dependencies:
   riverpod_generator: any
   mockito: any
   sqlite3: any
+  firebase_auth_mocks: any
 
   # Widgetbook（コンポーネントカタログ）
   widgetbook: any
