@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:flutter/foundation.dart';
 
 /// 認証操作をまとめたサービス。
 ///
@@ -18,7 +14,11 @@ class AuthService {
 
   final FirebaseAuth _auth;
 
-  Stream<User?> authStateChanges() => _auth.authStateChanges();
+  /// `authStateChanges()` は uid が変わるとき（サインイン / サインアウト）にしか
+  /// 発火しないため、`linkWithCredential` でプロバイダが追加されたときに UI が
+  /// 更新されない。`userChanges()` を使うことで連携 / 解除 / プロフィール変更でも
+  /// 再評価される。
+  Stream<User?> authStateChanges() => _auth.userChanges();
   User? get currentUser => _auth.currentUser;
 
   /// 未ログインなら匿名サインインする。既にサインイン済みなら何もしない。
@@ -29,24 +29,46 @@ class AuthService {
 
   /// Apple Sign In でアカウントを連携 / サインインする。
   /// 匿名状態なら既存 uid を保持してアップグレード、それ以外は通常サインイン。
+  ///
+  /// Firebase の `AppleAuthProvider` 経由で `signInWithProvider` /
+  /// `linkWithProvider` を呼ぶ実装。Service ID + Web Auth ハンドラ URL を
+  /// 用いるため audience ミスマッチが起きず、ネイティブ `OAuthCredential`
+  /// 方式で発生していた `Invalid OAuth response from apple.com` を避けられる。
   Future<void> linkWithApple() async {
-    final rawNonce = _generateNonce();
-    final hashedNonce = _sha256(rawNonce);
+    final provider = AppleAuthProvider()
+      ..addScope('email')
+      ..addScope('name');
 
-    final apple = await SignInWithApple.getAppleIDCredential(
-      scopes: const [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: hashedNonce,
-    );
-
-    final credential = OAuthProvider('apple.com').credential(
-      idToken: apple.identityToken,
-      rawNonce: rawNonce,
-    );
-
-    await _signInOrLink(credential);
+    final user = _auth.currentUser;
+    if (user != null && user.isAnonymous) {
+      try {
+        await user.linkWithProvider(provider);
+        return;
+      } on FirebaseAuthException catch (e) {
+        if (kDebugMode) {
+          debugPrint(
+            '[AuthService] linkWithProvider(apple) failed: code=${e.code} message=${e.message}',
+          );
+        }
+        if (e.code == 'credential-already-in-use' ||
+            e.code == 'email-already-in-use') {
+          final fallback = e.credential;
+          if (fallback != null) {
+            await _auth.signInWithCredential(fallback);
+          } else {
+            await _auth.signInWithProvider(provider);
+          }
+          return;
+        }
+        if (e.code == 'user-not-found') {
+          await _auth.signOut();
+          await _auth.signInWithProvider(provider);
+          return;
+        }
+        rethrow;
+      }
+    }
+    await _auth.signInWithProvider(provider);
   }
 
   /// メール / パスワードでアカウントを連携 / サインインする。
@@ -98,37 +120,6 @@ class AuthService {
     await ensureSignedIn();
   }
 
-  Future<void> _signInOrLink(AuthCredential credential) async {
-    final user = _auth.currentUser;
-    if (user != null && user.isAnonymous) {
-      try {
-        await user.linkWithCredential(credential);
-        return;
-      } on FirebaseAuthException catch (e) {
-        if (e.code != 'credential-already-in-use' &&
-            e.code != 'email-already-in-use') {
-          rethrow;
-        }
-        // 既存アカウントへ乗り換え
-        await _auth.signInWithCredential(credential);
-        return;
-      }
-    }
-    await _auth.signInWithCredential(credential);
-  }
-
-  String _generateNonce([int length = 32]) {
-    const charset =
-        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-._';
-    final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
-  }
-
-  String _sha256(String input) {
-    final bytes = utf8.encode(input);
-    return sha256.convert(bytes).toString();
-  }
 }
 
 /// FirebaseAuthException を UI 向けの日本語メッセージに変換する。
@@ -140,8 +131,10 @@ String authErrorMessage(Object error) {
       case 'weak-password':
         return 'パスワードは 6 文字以上で設定してください';
       case 'wrong-password':
-      case 'invalid-credential':
         return 'メールアドレスまたはパスワードが違います';
+      case 'invalid-credential':
+        // Apple / メール / Google など複数フローで発生し得るため、原因は限定しない。
+        return '認証情報が無効か、有効期限が切れています。もう一度お試しください';
       case 'user-not-found':
         return 'アカウントが見つかりません';
       case 'email-already-in-use':

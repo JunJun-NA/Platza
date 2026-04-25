@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -60,8 +61,9 @@ class _AnonymousActionsState extends ConsumerState<_AnonymousActions> {
     setState(() => _appleInProgress = true);
     try {
       await ref.read(authServiceProvider).linkWithApple();
-    } on SignInWithAppleAuthorizationException catch (e) {
-      if (e.code != AuthorizationErrorCode.canceled) {
+    } on FirebaseAuthException catch (e) {
+      // signInWithProvider 経由のキャンセルは web-context-cancelled で返る。
+      if (e.code != 'web-context-cancelled' && e.code != 'canceled') {
         widget.onError(authErrorMessage(e));
       }
     } catch (e) {
@@ -122,7 +124,7 @@ class _LinkedAccountInfoState extends ConsumerState<_LinkedAccountInfo> {
   Future<void> _signOut() async {
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('サインアウト'),
         content: const Text(
           'サインアウトすると、再びゲストとしてアプリを使うことになります。'
@@ -130,11 +132,11 @@ class _LinkedAccountInfoState extends ConsumerState<_LinkedAccountInfo> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('キャンセル'),
           ),
           FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text('サインアウト'),
           ),
         ],
