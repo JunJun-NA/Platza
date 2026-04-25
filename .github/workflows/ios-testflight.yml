@@ -80,10 +80,8 @@ jobs:
       - name: Build IPA
         working-directory: platza
         run: |
-          # Phase 1A: iOS はまだ flavor scheme 未対応。
-          # 既定の Runner scheme で main_prod.dart をビルドする。
-          # Phase 1B で `--flavor=prod` へ切り替える予定。
           flutter build ipa --release \
+            --flavor=prod \
             -t lib/main_prod.dart \
             --build-number=${{ github.run_number }} \
             --export-options-plist=ios/ExportOptions.plist

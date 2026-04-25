@@ -7,23 +7,17 @@ dev / prod の 2 環境を Flutter flavor で切り替える。
 
 | Flavor | 用途 | Bundle ID (iOS) | applicationId (Android) | 表示名 | アイコン | Firebase プロジェクト |
 |---|---|---|---|---|---|---|
-| `dev` | 開発・検証 | `com.nakanojunya.platza.dev`（Phase 1B 以降） | `com.nakanojunya.platza.dev` | Platza dev | DEV バッジ付き | `platza-dev`（Phase 2 以降） |
+| `dev` | 開発・検証 | `com.nakanojunya.platza.dev` | `com.nakanojunya.platza.dev` | Platza dev | DEV バッジ付き | `platza-dev`（Phase 2 以降） |
 | `prod` | 本番 | `com.nakanojunya.platza` | `com.nakanojunya.platza` | Platza | 通常 | `platza-prod`（Phase 2 以降） |
 
 ## 起動方法
 
 ```bash
-# dev で起動
-flutter run -t lib/main_dev.dart
+# dev で起動（iOS / Android 共通）
+flutter run -t lib/main_dev.dart --flavor=dev
 
 # prod で起動
-flutter run -t lib/main_prod.dart
-
-# Android はさらに --flavor を付ける
-flutter run -t lib/main_dev.dart --flavor=dev
 flutter run -t lib/main_prod.dart --flavor=prod
-
-# iOS の --flavor 対応は Phase 1B で実施（現状はエントリポイントのみで切替）
 ```
 
 `flutter run`（エントリポイント未指定）は後方互換のため `main_dev.dart` を呼び出す。
@@ -44,13 +38,21 @@ flutter build appbundle --release -t lib/main_prod.dart --flavor=prod
 ### iOS
 
 ```bash
-# Phase 1A 現状: flavor 未対応
-flutter build ipa --release -t lib/main_prod.dart
-
-# Phase 1B 以降:
-# flutter build ipa --release -t lib/main_prod.dart --flavor=prod
-# flutter build ipa --release -t lib/main_dev.dart  --flavor=dev
+flutter build ipa --release -t lib/main_prod.dart --flavor=prod
+flutter build ipa --release -t lib/main_dev.dart  --flavor=dev
 ```
+
+iOS の Build Configuration は `Debug-{dev,prod}` / `Release-{dev,prod}` /
+`Profile-{dev,prod}` の 6 種類。Scheme は `dev` と `prod` の 2 つ。
+Flutter の `--flavor` フラグで scheme と Configuration を切り替える。
+
+| Configuration | Signing | 用途 |
+|---|---|---|
+| `Debug-prod` / `Debug-dev` | Automatic | `flutter run` |
+| `Profile-prod` | Manual (Platza App Store) | プロファイル測定 |
+| `Profile-dev` | Automatic | 同上（dev） |
+| `Release-prod` | Manual (Platza App Store) | TestFlight / App Store |
+| `Release-dev` | Automatic | 開発端末への dev 配布 |
 
 ## アーキテクチャ
 
@@ -90,28 +92,26 @@ python3 scripts/generate_dev_icons.py
 
 ## 段階的な実装計画
 
-### Phase 1A（このストーリで完了）
+### Phase 1A（完了）
 
 - [x] Flutter 側の flavor 構造（`Flavor` enum, `bootstrap()`, エントリポイント）
 - [x] Android flavor（productFlavors, applicationIdSuffix, 表示名, dev アイコン）
-- [x] iOS dev アイコン素材を `AppIcon-dev.appiconset` に配置（参照は Phase 1B で）
+- [x] iOS dev アイコン素材を `AppIcon-dev.appiconset` に配置
 - [x] `firebase_options.dart` を flavor 切替の wrapper にリファクタ（demo 設定にフォールバック）
-- [x] TestFlight CI に `-t lib/main_prod.dart` を追加
-- [x] 本ドキュメント
 
-### Phase 1B（次の PR、要 Apple Developer 作業）
+### Phase 1B（完了）
 
-junya 側の事前作業:
-- [ ] Apple Developer Console で `com.nakanojunya.platza.dev` の Bundle ID 登録
-- [ ] dev 用 Provisioning Profile を作成
-- [ ] GitHub Secrets に dev 用の `BUILD_PROVISION_PROFILE_BASE64` 等を追加（必要なら別名で）
+junya 側の作業（実施済み）:
+- [x] Apple Developer Console で `com.nakanojunya.platza.dev` の Bundle ID 登録
+- [ ] dev 用 Provisioning Profile（必要になった時点で作成。現状 Automatic signing で運用）
+- [ ] GitHub Secrets に dev 用シークレット（dev TestFlight が必要になった時点で追加）
 
 Claude 側の作業:
-- [ ] iOS Xcode Configuration を 6 個に拡張（Debug/Release/Profile × dev/prod）
-- [ ] iOS Scheme を `dev` / `prod` の 2 つに分離（既存の `Runner.xcscheme` を置き換え）
-- [ ] 各 Configuration に `PRODUCT_BUNDLE_IDENTIFIER` / `ASSETCATALOG_COMPILER_APPICON_NAME` / `INFOPLIST_KEY_CFBundleDisplayName` を設定
-- [ ] TestFlight CI を `--flavor=prod` 対応に変更
-- [ ] dev 向け TestFlight ワークフロー（手動 dispatch のみ）を追加するかは要相談
+- [x] iOS Xcode Configuration を 6 個に拡張（`scripts/setup_ios_flavors.rb`）
+- [x] iOS Scheme を `dev` / `prod` の 2 つに分離
+- [x] 各 Configuration に `PRODUCT_BUNDLE_IDENTIFIER` / `ASSETCATALOG_COMPILER_APPICON_NAME` / `INFOPLIST_KEY_CFBundleDisplayName` を設定
+- [x] Flutter/Configuration 別 xcconfig を 6 個追加し pbxproj を張り直し（`scripts/wire_ios_xcconfigs.rb`）
+- [x] TestFlight CI を `--flavor=prod` 対応に変更
 
 ### Phase 2（Firebase 実プロジェクト接続、要 Firebase Console 作業）
 
