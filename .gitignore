@@ -11,3 +11,16 @@ key/
 
 # Flutter build artifacts (サブディレクトリ内の build/ も除外)
 **/build/
+
+# Firebase 実プロジェクト設定（dev/prod 用は次ストーリで導入）
+# `flutterfire configure` で生成される flavor 別ファイルや
+# ネイティブの認証情報はリポジトリに含めない。
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_app_id_file.json
+platza/lib/firebase_options_dev.dart
+platza/lib/firebase_options_prod.dart
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
