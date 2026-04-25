@@ -1,0 +1,5 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"
+#include "Generated.xcconfig"
+
+// dev は Automatic signing。Manual プロビジョニングプロファイルがまだ未整備のため。
+// 必要になったら Phase 1B 後の運用で Manual に切り替える想定。
