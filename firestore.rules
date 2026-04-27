@@ -1,5 +1,7 @@
 rules_version = '2';
 
+// Platza Firestore Security Rules
+// 詳細は docs/firestore_schema.md を参照。
 service cloud.firestore {
   match /databases/{database}/documents {
     function isSignedIn() {
@@ -10,18 +12,26 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
-    // ユーザー所有データ: 本人のみ読み書き可
-    match /users/{uid}/{document=**} {
+    // ユーザープロフィール本体（users/{uid} ドキュメント）
+    match /users/{uid} {
       allow read, write: if isOwner(uid);
+
+      // ユーザー所有の subcollection（plants, care_logs, care_schedules,
+      // plant_photos, settings など）。
+      // 任意の階層をまとめてオーナーのみ R/W 可とする。
+      match /{document=**} {
+        allow read, write: if isOwner(uid);
+      }
     }
 
-    // 植物種マスタ: 認証済みユーザーは読み取りのみ。書き込みは Cloud Functions / 管理者のみ。
+    // 植物種マスタ: 認証済みユーザーは読み取りのみ。
+    // 書き込みは Cloud Functions / 管理者ツール経由のみ（クライアントからは不可）。
     match /species/{speciesId} {
       allow read: if isSignedIn();
       allow write: if false;
     }
 
-    // それ以外は全拒否
+    // それ以外のパスは全拒否
     match /{document=**} {
       allow read, write: if false;
     }
