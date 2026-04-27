@@ -1,0 +1,15 @@
+{
+  "name": "platza-firestore-rules-test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Platza Firestore security rules tests (@firebase/rules-unit-testing + Jest).",
+  "scripts": {
+    "test": "firebase emulators:exec --only firestore --project demo-platza \"jest --runInBand\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.0.0",
+    "firebase-tools": "^14.0.0",
+    "jest": "^29.7.0"
+  }
+}
