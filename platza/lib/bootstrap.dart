@@ -25,7 +25,7 @@ Future<void> bootstrap(Flavor flavor) async {
   // - release × dev: 実 platza-dev
   // - release × prod: 実 platza-prod
   await Firebase.initializeApp(options: firebaseOptionsForFlavor(flavor));
-  if (kDebugMode && flavor.isDev && shouldConnectToFirebaseEmulators()) {
+  if (kDebugMode && flavor.isDev && await shouldConnectToFirebaseEmulators()) {
     await connectToFirebaseEmulators();
   }
 
