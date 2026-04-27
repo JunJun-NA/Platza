@@ -101,6 +101,13 @@ class AppTheme {
       ),
 
       // --- ボタン ---
+      // textStyle は明示的に渡さない。
+      // Material は ThemeData.localize で `theme.textTheme.labelLarge` を
+      // inherit:false の englishLike2021 とマージするため、ここで
+      // `AppTypography.button`（inherit:true）を渡してしまうと、テーマ切替時の
+      // `AnimatedDefaultTextStyle` の lerp で inherit 不整合になる。
+      // フォールバックの `theme.textTheme.labelLarge` を使う方が
+      // ライト/ダーク両側で同じ inherit 値になり、安全。
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -112,13 +119,11 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppRadius.all12,
           ),
-          textStyle: AppTypography.button,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryGreen,
-          textStyle: AppTypography.button,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -132,7 +137,6 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppRadius.all12,
           ),
-          textStyle: AppTypography.button,
         ),
       ),
 
@@ -260,6 +264,7 @@ class AppTheme {
         ),
       ),
 
+      // textStyle はライト側と同じ理由で渡さない（コメント参照）。
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -271,13 +276,11 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppRadius.all12,
           ),
-          textStyle: AppTypography.button,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryLight,
-          textStyle: AppTypography.button,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -291,7 +294,6 @@ class AppTheme {
           shape: const RoundedRectangleBorder(
             borderRadius: AppRadius.all12,
           ),
-          textStyle: AppTypography.button,
         ),
       ),
 
