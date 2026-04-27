@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// 認証操作をまとめたサービス。
 ///
@@ -14,6 +15,17 @@ class AuthService {
 
   final FirebaseAuth _auth;
 
+  /// このインストールで一度でも `ensureSignedIn` を通過したかを示すフラグの保存キー。
+  ///
+  /// iOS の Keychain は **アプリをアンインストールしても保持される** 仕様のため、
+  /// 何もしないと再インストール直後に前回のサインイン状態が復元されてしまう。
+  /// このフラグを SharedPreferences（アンインストールで消える）に持つことで、
+  /// 「Keychain にトークンがあるが、SharedPreferences にフラグがない」=
+  /// 新規インストール直後と判定し、Keychain 残存セッションを破棄してから
+  /// 匿名サインインしなおす。
+  @visibleForTesting
+  static const hasLaunchedBeforeKey = 'platza_auth_has_launched_before';
+
   /// `authStateChanges()` は uid が変わるとき（サインイン / サインアウト）にしか
   /// 発火しないため、`linkWithCredential` でプロバイダが追加されたときに UI が
   /// 更新されない。`userChanges()` を使うことで連携 / 解除 / プロフィール変更でも
@@ -22,9 +34,24 @@ class AuthService {
   User? get currentUser => _auth.currentUser;
 
   /// 未ログインなら匿名サインインする。既にサインイン済みなら何もしない。
+  ///
+  /// 新規インストール直後（[hasLaunchedBeforeKey] が未設定）には iOS Keychain
+  /// に残っている前回インストールのセッションを破棄してから匿名サインインする。
   Future<void> ensureSignedIn() async {
+    await _resetSessionOnFreshInstall();
     if (_auth.currentUser != null) return;
     await _auth.signInAnonymously();
+  }
+
+  Future<void> _resetSessionOnFreshInstall() async {
+    final prefs = await SharedPreferences.getInstance();
+    final hasLaunchedBefore = prefs.getBool(hasLaunchedBeforeKey) ?? false;
+    if (hasLaunchedBefore) return;
+
+    if (_auth.currentUser != null) {
+      await _auth.signOut();
+    }
+    await prefs.setBool(hasLaunchedBeforeKey, true);
   }
 
   /// Apple Sign In でアカウントを連携 / サインインする。
