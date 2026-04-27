@@ -280,11 +280,51 @@ class AppTheme {
           textStyle: AppTypography.button,
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primaryLight,
+          side: const BorderSide(color: AppColors.primaryLight),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl,
+            vertical: AppSpacing.md,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: AppRadius.all12,
+          ),
+          textStyle: AppTypography.button,
+        ),
+      ),
+
+      // --- ListTile ---
+      listTileTheme: const ListTileThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.all12,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+        ),
+      ),
 
       dividerTheme: const DividerThemeData(
         color: AppColors.dividerDark,
         thickness: 1,
         space: 1,
+      ),
+
+      // --- Switch ---
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primaryGreen;
+          }
+          return null;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primaryDark;
+          }
+          return null;
+        }),
       ),
 
       progressIndicatorTheme: const ProgressIndicatorThemeData(
