@@ -74,6 +74,7 @@ dev_dependencies:
   mockito: any
   sqlite3: any
   firebase_auth_mocks: any
+  fake_cloud_firestore: any
 
   # Widgetbook（コンポーネントカタログ）
   widgetbook: any

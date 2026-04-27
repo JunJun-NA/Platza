@@ -33,6 +33,7 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
   int? _repotIntervalDays;
   bool _isLoaded = false;
   bool _isSaving = false;
+  bool _isDeleting = false;
 
   @override
   void dispose() {
@@ -122,9 +123,17 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () => _showDeleteConfirmation(plant),
-                      icon: const Icon(Icons.delete_outline),
-                      label: const Text('この植物を削除'),
+                      onPressed: (_isDeleting || _isSaving)
+                          ? null
+                          : () => _showDeleteConfirmation(plant),
+                      icon: _isDeleting
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.delete_outline),
+                      label: Text(_isDeleting ? '削除中…' : 'この植物を削除'),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textDanger,
                         side: const BorderSide(color: AppColors.borderDanger),
@@ -447,13 +456,17 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
   }
 
   Future<void> _deletePlant() async {
-    final repo = ref.read(plantRepositoryProvider);
-    await repo.deletePlant(widget.plantId);
+    if (_isDeleting) return;
+    setState(() => _isDeleting = true);
 
-    // プロバイダを無効化
-    ref.invalidate(plantsProvider);
+    try {
+      final repo = ref.read(plantRepositoryProvider);
+      await repo.deletePlant(widget.plantId);
 
-    if (mounted) {
+      // プロバイダを無効化
+      ref.invalidate(plantsProvider);
+
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('植物を削除しました'),
@@ -461,6 +474,12 @@ class _PlantEditScreenState extends ConsumerState<PlantEditScreen> {
         ),
       );
       context.go(AppRoutes.home);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isDeleting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('削除に失敗しました: $e')),
+      );
     }
   }
 }

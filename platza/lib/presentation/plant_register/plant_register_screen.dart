@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:platza/application/providers/database_provider.dart';
 import 'package:platza/application/providers/identification_providers.dart';
 import 'package:platza/application/providers/plant_photo_providers.dart';
+import 'package:platza/core/constants/app_routes.dart';
 import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
 import 'package:platza/domain/entities/entities.dart';
@@ -28,6 +29,7 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
   final _nicknameController = TextEditingController();
 
   bool _isIdentifying = false;
+  bool _isRegistering = false;
   String? _identificationPhotoPath;
 
   @override
@@ -51,18 +53,29 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
         onStepContinue: _onStepContinue,
         onStepCancel: _onStepCancel,
         controlsBuilder: (context, details) {
+          final isFinalStep = _currentStep == 3;
           return Padding(
             padding: const EdgeInsets.only(top: AppSpacing.lg),
             child: Row(
               children: [
                 FilledButton(
-                  onPressed: details.onStepContinue,
-                  child: Text(_currentStep == 3 ? '登録する' : '次へ'),
+                  onPressed: _isRegistering ? null : details.onStepContinue,
+                  child: isFinalStep && _isRegistering
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Text(isFinalStep ? '登録する' : '次へ'),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 if (_currentStep > 0)
                   TextButton(
-                    onPressed: details.onStepCancel,
+                    onPressed: _isRegistering ? null : details.onStepCancel,
                     child: const Text('戻る'),
                   ),
               ],
@@ -423,70 +436,88 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
 
   Future<void> _registerPlant() async {
     if (_nicknameController.text.trim().isEmpty) return;
+    if (_isRegistering) return;
 
-    final plantRepo = ref.read(plantRepositoryProvider);
-    final scheduleRepo = ref.read(careScheduleRepositoryProvider);
-    final now = DateTime.now();
-    const uuid = Uuid();
-    final plantId = uuid.v4();
+    setState(() => _isRegistering = true);
 
-    // 植物エンティティを作成・保存
-    final plant = Plant(
-      id: plantId,
-      nickname: _nicknameController.text.trim(),
-      speciesId: _selectedSpecies!.id,
-      location: _selectedLocation,
-      createdAt: now,
-    );
-    await plantRepo.addPlant(plant);
+    try {
+      final plantRepo = ref.read(plantRepositoryProvider);
+      final scheduleRepo = ref.read(careScheduleRepositoryProvider);
+      final now = DateTime.now();
+      const uuid = Uuid();
+      final plantId = uuid.v4();
 
-    // デフォルトのお世話スケジュールを作成（水やり・肥料）
-    final waterSchedule = CareSchedule(
-      id: uuid.v4(),
-      plantId: plantId,
-      careType: CareType.water,
-      intervalDays: _selectedSpecies!.waterFrequencyDays,
-      nextDueDate: now.add(
-        Duration(days: _selectedSpecies!.waterFrequencyDays),
-      ),
-    );
-    await scheduleRepo.addSchedule(waterSchedule);
-
-    final fertilizerSchedule = CareSchedule(
-      id: uuid.v4(),
-      plantId: plantId,
-      careType: CareType.fertilize,
-      intervalDays: _selectedSpecies!.fertilizerFrequencyDays,
-      nextDueDate: now.add(
-        Duration(days: _selectedSpecies!.fertilizerFrequencyDays),
-      ),
-    );
-    await scheduleRepo.addSchedule(fertilizerSchedule);
-
-    final repotSchedule = CareSchedule(
-      id: uuid.v4(),
-      plantId: plantId,
-      careType: CareType.repot,
-      intervalDays: _selectedSpecies!.repotFrequencyDays,
-      nextDueDate: now.add(
-        Duration(days: _selectedSpecies!.repotFrequencyDays),
-      ),
-    );
-    await scheduleRepo.addSchedule(repotSchedule);
-
-    // 写真で判別した場合、撮影した写真を植物の最初の記録として保存
-    if (_identificationPhotoPath != null) {
-      final photoRepo = ref.read(plantPhotoRepositoryProvider);
-      final photo = PlantPhoto(
-        id: uuid.v4(),
-        plantId: plantId,
-        filePath: _identificationPhotoPath!,
-        caption: '登録時の写真',
+      // 植物エンティティを作成・保存
+      final plant = Plant(
+        id: plantId,
+        nickname: _nicknameController.text.trim(),
+        speciesId: _selectedSpecies!.id,
+        location: _selectedLocation,
         createdAt: now,
       );
-      await photoRepo.addPhoto(photo);
-    }
+      await plantRepo.addPlant(plant);
 
-    if (mounted) context.pop();
+      // デフォルトのお世話スケジュールを作成（水やり・肥料）
+      final waterSchedule = CareSchedule(
+        id: uuid.v4(),
+        plantId: plantId,
+        careType: CareType.water,
+        intervalDays: _selectedSpecies!.waterFrequencyDays,
+        nextDueDate: now.add(
+          Duration(days: _selectedSpecies!.waterFrequencyDays),
+        ),
+      );
+      await scheduleRepo.addSchedule(waterSchedule);
+
+      final fertilizerSchedule = CareSchedule(
+        id: uuid.v4(),
+        plantId: plantId,
+        careType: CareType.fertilize,
+        intervalDays: _selectedSpecies!.fertilizerFrequencyDays,
+        nextDueDate: now.add(
+          Duration(days: _selectedSpecies!.fertilizerFrequencyDays),
+        ),
+      );
+      await scheduleRepo.addSchedule(fertilizerSchedule);
+
+      final repotSchedule = CareSchedule(
+        id: uuid.v4(),
+        plantId: plantId,
+        careType: CareType.repot,
+        intervalDays: _selectedSpecies!.repotFrequencyDays,
+        nextDueDate: now.add(
+          Duration(days: _selectedSpecies!.repotFrequencyDays),
+        ),
+      );
+      await scheduleRepo.addSchedule(repotSchedule);
+
+      // 写真で判別した場合、撮影した写真を植物の最初の記録として保存
+      if (_identificationPhotoPath != null) {
+        final photoRepo = ref.read(plantPhotoRepositoryProvider);
+        final photo = PlantPhoto(
+          id: uuid.v4(),
+          plantId: plantId,
+          filePath: _identificationPhotoPath!,
+          caption: '登録時の写真',
+          createdAt: now,
+        );
+        await photoRepo.addPhoto(photo);
+      }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${plant.nickname} を登録しました'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      context.go(AppRoutes.home);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isRegistering = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('登録に失敗しました: $e')),
+      );
+    }
   }
 }
