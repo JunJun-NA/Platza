@@ -26,6 +26,12 @@ class PlatzaApp extends ConsumerWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
+      // テーマ切替アニメを無効化する（暫定対処）。
+      // iOS で `OutlinedButton.icon` 配下の `AnimatedDefaultTextStyle` が
+      // ライト↔ダーク lerp 中に inherit 不整合でクラッシュする問題があり、
+      // 切替を瞬時に行うことで lerp パスを通らないようにしている。
+      // 恒久対応は `PlatzaOutlinedButton` のコンポーネント化で行う予定。
+      themeAnimationDuration: Duration.zero,
       routerConfig: router,
     );
   }
