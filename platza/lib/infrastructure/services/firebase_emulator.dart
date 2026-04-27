@@ -1,20 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
 /// debug × dev フレーバーで起動しているときに Emulator Suite に接続するかを判定する。
 ///
-/// 当面は dev × debug の利用シーンを「ローカル開発（Mac 上のシミュレータ /
-/// エミュレータ / Web / macOS）」前提として全プラットフォームで true を返す。
-/// 実機 iOS で `localhost` を見ても Mac には届かないが、`flutter run -t main_dev.dart
-/// --flavor=dev` を実機に向けて使う運用は想定していない。
+/// 想定:
+/// - シミュレータ / Web / macOS 等のホスト Mac 上で動くもの: 接続する
+/// - 物理デバイス（iOS 実機 / Android 実機）: 接続しない（実 platza-dev に向ける）
 ///
-/// 以前は iOS で `Platform.environment.containsKey('SIMULATOR_DEVICE_NAME')` を
-/// 使っていたが、Flutter から見た `Platform.environment` は iOS シミュレータで
-/// 空になることが多く、emulator に接続しないまま production endpoint に投げて
-/// 詰まる事故があったため判定を撤去した。
-bool shouldConnectToFirebaseEmulators() => true;
+/// 物理デバイスから `127.0.0.1` を見ても Mac の Emulator には届かないため、
+/// `device_info_plus` の `isPhysicalDevice` で判別して実機ではスキップする。
+/// `Platform.environment` を使った旧実装はシミュレータでも空になることが多く
+/// 信頼できなかったため [device_info_plus] を採用。
+Future<bool> shouldConnectToFirebaseEmulators() async {
+  if (kIsWeb) return true;
+
+  final info = DeviceInfoPlugin();
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.iOS:
+      final ios = await info.iosInfo;
+      return !ios.isPhysicalDevice;
+    case TargetPlatform.android:
+      final android = await info.androidInfo;
+      return !android.isPhysicalDevice;
+    case TargetPlatform.macOS:
+    case TargetPlatform.linux:
+    case TargetPlatform.windows:
+    case TargetPlatform.fuchsia:
+      return true;
+  }
+}
 
 /// Firebase Emulator Suite に接続する。
 ///
