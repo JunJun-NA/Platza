@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,23 +11,6 @@ import 'package:platza/domain/entities/entities.dart';
 import 'package:platza/domain/enums/enums.dart';
 import 'package:platza/presentation/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
-
-/// Firestore オフライン書き込みがサーバー ACK を待ち続けて Future が
-/// 解決しないケースのワークアラウンド。タイムアウトしてもローカル
-/// キャッシュ書き込みは完了している前提で続行する。
-const Duration kFirestoreSyncTimeout = Duration(seconds: 5);
-
-@visibleForTesting
-Future<void> writeWithSyncTimeout(
-  Future<void> write, {
-  Duration timeout = kFirestoreSyncTimeout,
-}) async {
-  try {
-    await write.timeout(timeout);
-  } on TimeoutException {
-    // ローカル書き込みは完了しており、SDK がサーバー同期を継続する。
-  }
-}
 
 /// 植物登録画面 - カテゴリ→種類→置き場所→名前の4ステップ
 class PlantRegisterScreen extends ConsumerStatefulWidget {
@@ -474,11 +455,9 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
     );
 
     try {
-      // Firestore の set() はオフライン時にローカルキャッシュへ即書き込まれる
-      // 一方、サーバー ACK を待ち続ける Future が解決せずローディングが
-      // 終わらない事象が発生していた。短いタイムアウトを設けてローカル
-      // 書き込み完了を以って成功扱いとし、サーバー同期は SDK に任せる。
-      await writeWithSyncTimeout(plantRepo.addPlant(plant));
+      // Firestore オフライン時のサーバー ACK 待ちハングはリポジトリ側の
+      // writeWithSyncTimeout で吸収済み。
+      await plantRepo.addPlant(plant);
 
       final waterSchedule = CareSchedule(
         id: uuid.v4(),

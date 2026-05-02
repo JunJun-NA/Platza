@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:platza/core/utils/firestore_sync_timeout.dart';
 import 'package:platza/domain/entities/plant.dart';
 import 'package:platza/domain/enums/enums.dart';
 import 'package:platza/domain/repositories/plant_repository.dart';
@@ -36,18 +37,20 @@ class FirestorePlantRepository implements PlantRepository {
   }
 
   @override
-  Future<void> addPlant(Plant plant) async {
-    await _plantsRef.doc(plant.id).set(_toMap(plant));
+  Future<void> addPlant(Plant plant) {
+    return writeWithSyncTimeout(_plantsRef.doc(plant.id).set(_toMap(plant)));
   }
 
   @override
-  Future<void> updatePlant(Plant plant) async {
-    await _plantsRef.doc(plant.id).set(_toMap(plant), SetOptions(merge: true));
+  Future<void> updatePlant(Plant plant) {
+    return writeWithSyncTimeout(
+      _plantsRef.doc(plant.id).set(_toMap(plant), SetOptions(merge: true)),
+    );
   }
 
   @override
-  Future<void> deletePlant(String id) async {
-    await _plantsRef.doc(id).delete();
+  Future<void> deletePlant(String id) {
+    return writeWithSyncTimeout(_plantsRef.doc(id).delete());
   }
 
   @override
