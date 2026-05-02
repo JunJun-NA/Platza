@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:platza/presentation/plant_register/plant_register_screen.dart';
+import 'package:platza/core/utils/firestore_sync_timeout.dart';
 
 void main() {
   group('writeWithSyncTimeout', () {
@@ -39,6 +39,10 @@ void main() {
         writeWithSyncTimeout(failing()),
         throwsA(isA<StateError>()),
       );
+    });
+
+    test('デフォルトタイムアウトは kFirestoreSyncTimeout', () {
+      expect(kFirestoreSyncTimeout, const Duration(seconds: 5));
     });
   });
 }

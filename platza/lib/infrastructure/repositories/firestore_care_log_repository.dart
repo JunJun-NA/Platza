@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:platza/core/utils/firestore_sync_timeout.dart';
 import 'package:platza/domain/entities/care_log.dart';
 import 'package:platza/domain/enums/enums.dart';
 import 'package:platza/domain/repositories/care_log_repository.dart';
@@ -54,18 +55,18 @@ class FirestoreCareLogRepository implements CareLogRepository {
   }
 
   @override
-  Future<void> addLog(CareLog log) async {
-    await _logsRef.doc(log.id).set(_toMap(log));
+  Future<void> addLog(CareLog log) {
+    return writeWithSyncTimeout(_logsRef.doc(log.id).set(_toMap(log)));
   }
 
   @override
-  Future<void> updateLog(CareLog log) async {
-    await _logsRef.doc(log.id).set(_toMap(log));
+  Future<void> updateLog(CareLog log) {
+    return writeWithSyncTimeout(_logsRef.doc(log.id).set(_toMap(log)));
   }
 
   @override
-  Future<void> deleteLog(String id) async {
-    await _logsRef.doc(id).delete();
+  Future<void> deleteLog(String id) {
+    return writeWithSyncTimeout(_logsRef.doc(id).delete());
   }
 
   @override
