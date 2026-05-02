@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:platza/application/providers/database_provider.dart';
 import 'package:platza/application/providers/identification_providers.dart';
 import 'package:platza/application/providers/plant_photo_providers.dart';
-import 'package:platza/application/providers/plant_providers.dart';
 import 'package:platza/core/constants/app_routes.dart';
 import 'package:platza/core/constants/plant_species_data.dart';
 import 'package:platza/core/theme/theme.dart';
@@ -528,7 +526,6 @@ class _PlantRegisterScreenState extends ConsumerState<PlantRegisterScreen> {
       }
 
       if (!mounted) return;
-      ref.invalidate(plantsProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${plant.nickname} を登録しました'),
