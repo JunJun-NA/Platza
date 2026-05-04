@@ -28,6 +28,9 @@ dependencies:
   # ドット絵アニメーション
   flame: any
 
+  # SVG表示
+  flutter_svg: any
+
   # 通知
   flutter_local_notifications: any
   timezone: any
@@ -87,19 +90,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # assets:
-  #   - assets/pixel_art/echeveria/
-  #   - assets/pixel_art/sedum/
-  #   - assets/pixel_art/haworthia/
-  #   - assets/pixel_art/graptopetallum/
-  #   - assets/pixel_art/aloe/
-  #   - assets/pixel_art/cactus_round/
-  #   - assets/pixel_art/cactus_pillar/
-  #   - assets/pixel_art/cactus_paddle/
-  #   - assets/pixel_art/cactus_star/
-  #   - assets/pixel_art/cactus_ball/
-  #
-  # fonts:
-  #   - family: PixelFont
-  #     fonts:
-  #       - asset: assets/fonts/PixelMplus12-Regular.ttf
+  assets:
+    - assets/backgrounds/
+    - assets/plants_art/

@@ -174,4 +174,4 @@ final class CurrentAppUserProvider
   }
 }
 
-String _$currentAppUserHash() => r'ce1be3f9027f23c776189e20deb782eb568ef22e';
+String _$currentAppUserHash() => r'584d3a1f3b3eea29900ad41e0e79d9082c46ce22';
