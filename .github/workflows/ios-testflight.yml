@@ -22,6 +22,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # device_info_plus 13.x が `@available(iOS 26.1, *)` を含み iOS 26 SDK
+      # 必須のため、ランナーのデフォルト Xcode 16.4 では `isiOSAppOnVision`
+      # セレクタが解決できずビルドが失敗する。Xcode 26.x を明示する。
+      # 参考: https://github.com/fluttercommunity/plus_plugins/issues/3811
+      - name: Select Xcode 26
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.0.1'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
