@@ -1198,6 +1198,8 @@ PODS:
     - Firebase/Firestore (= 12.12.0)
     - firebase_core
     - Flutter
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/Auth (12.12.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 12.12.0)
@@ -1431,6 +1433,7 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -1472,6 +1475,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -1497,6 +1502,7 @@ SPEC CHECKSUMS:
   abseil: a05cc83bf02079535e17169a73c5be5ba47f714b
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
   cloud_firestore: de8bda50bfce3c4ce0037ce5387586c1b5c20695
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Firebase: aa154fee4e9b8eac17aa42344988865b3e857d33
   firebase_auth: 5f9fe078dd3de8c80b82a291d49906a99c0f490c
   firebase_core: 40bc9f4c0ee3a28fbfb1e00e2ddaed744bb86388
@@ -1530,6 +1536,6 @@ SPEC CHECKSUMS:
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
 
-PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
+PODFILE CHECKSUM: 93b0beafbaf21faa38796d6f5983f8db785f7856
 
 COCOAPODS: 1.16.2
