@@ -1,0 +1,66 @@
+name: Notion Backlog Sync
+
+# PR がマージされたら、PR 本文に書かれた Notion ページの
+# ステータスを「完了」に自動更新する。
+#
+# 紐付けルール:
+#   PR 本文のどこかに対象ストーリの Notion ページ URL を記載する。
+#   例) Notion: https://www.notion.so/Story-Title-3384d8c8051680faa916e5b6d7e0ed16
+#   URL 末尾の 32 桁 ID を抽出して該当ページを更新する。
+#
+# 必要な準備（手動・一度きり）:
+#   1. https://www.notion.so/my-integrations で Internal Integration を作成
+#   2. バックログDBを開き「…」→ 接続 からその Integration を共有
+#   3. リポジトリ Settings → Secrets に NOTION_TOKEN を登録
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  complete-story:
+    name: Mark backlog story as 完了
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Update Notion story status
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${NOTION_TOKEN:-}" ]; then
+            echo "::warning::NOTION_TOKEN が未設定のためスキップします。"
+            exit 0
+          fi
+
+          # PR 本文は injection 防止のためイベントペイロードから jq で取り出す。
+          PAGE_ID="$(jq -r '.pull_request.body // ""' "$GITHUB_EVENT_PATH" \
+            | grep -oiE 'notion\.so/[a-zA-Z0-9._%-]*[0-9a-fA-F]{32}' \
+            | grep -oiE '[0-9a-fA-F]{32}' \
+            | tail -n1 || true)"
+
+          if [ -z "$PAGE_ID" ]; then
+            echo "::notice::PR 本文に Notion ページ URL が見つかりませんでした。スキップします。"
+            exit 0
+          fi
+
+          echo "Updating Notion page: $PAGE_ID -> ステータス=完了"
+
+          HTTP_CODE="$(curl -sS -o /tmp/notion_resp.json -w '%{http_code}' \
+            -X PATCH "https://api.notion.com/v1/pages/${PAGE_ID}" \
+            -H "Authorization: Bearer ${NOTION_TOKEN}" \
+            -H "Notion-Version: 2022-06-28" \
+            -H "Content-Type: application/json" \
+            -d '{"properties":{"ステータス":{"status":{"name":"完了"}}}}')"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Notion API がエラーを返しました (HTTP $HTTP_CODE)"
+            cat /tmp/notion_resp.json
+            exit 1
+          fi
+
+          echo "::notice::Notion ストーリを完了に更新しました ($PAGE_ID)"
